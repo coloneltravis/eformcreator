@@ -1,0 +1,116 @@
+extends layout
+
+block scripts
+	script(type='text/javascript' src='/js/tinymce_4.4.3/tinymce.min.js')
+	script(type='text/javascript' src='/js/formbuilder.js')
+
+block content
+	each obj in form
+		h1.pagetitle= obj.title
+		h3!= obj.desc
+		div.pagecontent
+			div#formJSON= fields
+
+			div.toolbox
+				div#tabs
+					ul
+						li
+							a#fieldButton(href="#tab1") Add a field
+						li
+							a#fieldeditButton(href="#tab2") Field details
+	
+					div#tab1
+						form#actionForm(action='/formedit' method='post')
+							ul.toolscol
+								li
+									button.btn#addtext(name="text") Text
+										img(src='/img/text.png')
+								li
+									button.btn#addarea(name="area") Text Area
+										img(src='/img/area.png')
+								li
+									button.btn#addnumber(name="number") Number
+										img(src='/img/number.png')
+								li
+									button.btn#addurl(name="url") Url
+										img(src='/img/url.png')
+								li
+									button.btn#adddroplist(name="droplist") Dropdown List
+										img(src='/img/dropdown.png')
+								li
+									button.btn#addcheck(name="checkbox") Checkbox List
+										img(src='/img/check.png')
+								li
+									button.btn#addradio(name="radio") Radio List
+										img(src='/img/radio.png')
+								li
+									button.btn#addyesno(name="yesno") Yes/No
+										img(src='/img/url.png')
+							ul.toolscol
+								li
+									button.btn#addname(name="fullname") Name
+										img(src='/img/name.png')
+								li
+									button.btn#addpostal(name="postaladdress") Postal Address
+										img(src='/img/postal.png')
+								li
+									button.btn#addemail(name="emailaddress") Email Address
+										img(src='/img/email.png')
+								li
+									button.btn#addphone(name="phone") Phone
+										img(src='/img/phone.png')
+								li
+									button.btn#adddate(name="datefield") Date
+										img(src='/img/calendar.png')
+								li
+									button.btn#addtime(name="timefield") Time
+										img(src='/img/time.png')
+								li
+									button.btn#adddocupload(name="docupload") Document Upload
+										img(src='/img/docupload.png')
+								li
+									button.btn#addbreak(name="break") Break
+										img(src='/img/break.png')
+							div.clearfix
+
+					div#tab2
+						form(action='/formsave' method='post')
+							label Title
+								input#title(type='text' name='title' value='')
+	
+							select#displayselect.displayselect
+								option#Display Display
+								option#Hide Hide
+								option#Icon Icon
+							label Description
+								textarea#description(name='description' value='')			
+								
+							fieldset#options_label(style="display:none;")
+								legend Options
+									a#options_add.btn.btn-default(href="#") Add option
+									a#options_no.btn.btn-default(href="#") No default
+								ol
+						
+							div#size_label(style="display:none;")
+								select#size.size
+									option(value='10') Small
+									option(value='20') Medium
+									option(value='50') Large
+									option(value='100') X-Large
+		
+							div#required_label
+								label Required?
+									input(type="checkbox" name="required" id="required" value="1")
+		
+							input#apply.btn.btn-primary(type="button" name="apply" value="Apply")
+
+			
+			div.formarea
+				ul#formlist
+				div#formactions
+					a.btn.btn-primary(href='/saveform') Save
+					a.btn.btn-default(href='/cancel') Cancel
+
+			div.clearfix
+
+		div.pagefooter

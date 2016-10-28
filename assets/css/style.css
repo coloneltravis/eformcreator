@@ -1,0 +1,45 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+
+nav.navbar {z-index:1000;background-color:#fff;border-bottom:1px dotted #000;}
+
+a {
+  color: #00B7FF;
+}
+
+.formarea {float:left;}
+.formarea #formlist {list-style-type: none;}
+.formarea #formactions {margin-left:30px;}
+
+
+.formfield {
+	label {font-weight: bold;}
+	margin: 10px;
+	padding: 5px;
+}
+
+
+div.toolbox {
+	width:400px;
+	float:left;
+}
+
+
+ul {list-style-type: none;}
+
+
+ul.toolscol {
+	float:left;
+	margin:0px; padding:0px;
+	list-style-type: none;
+}
+
+ul.toolscol li {
+	padding:2px;
+}
+
+ul.toolscol li button.btn {width:160px; text-align:left; white-space:nowrap;}
+ul.toolscol li button.btn img {float:left;margin:2px;}

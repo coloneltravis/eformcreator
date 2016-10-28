@@ -1,0 +1,12 @@
+extends layout
+
+block content
+	h1.pagetitle= title
+	div.pagecontent
+		a.btn.btn-primary(href='/formadd') Create a Form
+		ul
+			for form in formslist
+				li
+					a.btn(href='/formedit/#{form.id}') Edit
+					span= form.title
+	div.pagefooter

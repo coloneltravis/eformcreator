@@ -1,0 +1,32 @@
+doctype html
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/css/style.css')
+		link(rel='stylesheet', href='/css/bootstrap.min.css')
+		link(rel='stylesheet', href='/css/jquery-ui.min.css')
+		script(type='text/javascript' src='/js/jquery-3.1.1.min.js')
+		script(type='text/javascript' src='/js/jquery-ui.min.js')
+		script(type='text/javascript' src='/js/bootstrap.min.js')
+
+		block scripts
+	body
+		nav.navbar.navbar-fixed-top
+			div.container
+				div.navbar-header
+					button.navbar-toggle.collapsed(type='button' data-toggle='collapse' aria-controls='navbar' aria-expanded='false')
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+
+				div.collapse.navbar-collapse
+					ul.nav.navbar-nav
+						li.active
+							a(href='/forms') Forms
+						li
+							a(href='/reports') Reports
+						li
+							a(href='/admin') Admin
+
+		block content

@@ -1,0 +1,25 @@
+extends layout
+
+block scripts
+	script(type='text/javascript' src='/js/tinymce_4.4.3/tinymce.min.js')
+	script(type='text/javascript' src='/js/formedit.js')
+
+block content
+	h1.pagetitle= title
+	div.pagecontent
+		form(action='/createform' method='post')
+			div.formfield
+				label(for='formtitle') Form Title:
+				input(type='text' id='formtitle' name='formtitle' value='')
+
+			div.formfield
+				label(for='formdesc') Description
+				textarea(id='formdesc' name='formdesc' rows='3' cols='50')
+
+			div.formfield
+				label(for='orgname') Organisation name
+				input(type='text' name='orgname' id='orgname' value='')
+
+			div.formfield
+				input(type='submit' name='createform' value='Create')
+	div.pagefooter
