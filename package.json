@@ -14,5 +14,20 @@
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.0",
     "sqlite3": "^3.1.8"
-  }
+  },
+  "description": "eForm Creator is a responsive web application for creating and managing eforms.  It is developed usint Node.js and XML.",
+  "main": "app.js",
+  "devDependencies": {
+    "sqlite3": "^3.1.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coloneltravis/eformcreator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coloneltravis/eformcreator/issues"
+  },
+  "homepage": "https://github.com/coloneltravis/eformcreator#readme"
 }

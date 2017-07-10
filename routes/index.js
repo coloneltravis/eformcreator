@@ -43,7 +43,7 @@ router.get('/formedit/:id', function(req, res, next) {
 	var fld = {id: 1, type: 'text', description: 'text field', cats: null, perm: 0};
 	fields.push(fld);
 	console.log(fields);
-	
+
 	db.serialize(function() {
 		var stmt = db.prepare('SELECT id, title, desc FROM forms WHERE id=?');
 		stmt.all(req.params.id, function(err, row) {
@@ -56,6 +56,14 @@ router.get('/formedit/:id', function(req, res, next) {
 
 	db.close();
 });
+
+
+router.post('/saveform', function(req, res, next) {
+
+	console.log(req.body);
+	res.send('Saving form');
+});
+
 
 
 

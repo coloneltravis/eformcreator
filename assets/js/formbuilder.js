@@ -32,6 +32,7 @@ var FormBuilder = {
 		this.selected = null;
 		this.leaving = false; // Tells the difference between leaving and leaving via the cancel button
 		this.defaultTitles = {
+			'grid': 'Grid',
 			'text': 'Text field title',
 			'radio': 'Radio buttons title',
 			'droplist': 'Drop-down list title',
@@ -687,7 +688,9 @@ var FormBuilder = {
 		field = fieldTmp2;
 
 		var display = [];
-		if (field.type.match('text')) {
+		if (field.type.match('grid')) {
+			display.push.apply(display, ['<label class="well"> <span class="gridcell" /> <span class="gridcell" /> <span class="gridcell" /> <span class="gridcell" /> </label>']);
+		} else if (field.type.match('text')) {
 			display.push.apply(display, ['<label class="well"><span class="title">',field.title,'</span><br /><input type="text" size="',field.fieldSize,'" value="',field.defaultvalue,'" /></label>']);
 		} else if (field.type.match('date')) {
 			display.push.apply(display, ['<label class="well"><span class="title">',field.title,'</span><br /><input type="date" size="',field.fieldSize,'" value="',field.defaultvalue,'" /></label>']);
@@ -811,11 +814,11 @@ var FormBuilder = {
 	buildSave: function() {
 		section = [];
 		$('#formList > li').each(function() {
-			if ($(this).data('prop').cats)
-				$(this).data('prop').cats = $(this).data('prop').cats.join(',');
+			/*if ($(this).data('prop').cats)
+				$(this).data('prop').cats = $(this).data('prop').cats.join(',');*/
 
-			if ($(this).data('prop').perm)
-				$(this).data('prop').perm = $(this).data('prop').perm.join(',');
+			/*if ($(this).data('prop').perm)
+				$(this).data('prop').perm = $(this).data('prop').perm.join(',');*/
 
 			section.push($(this).data('prop'));
 		});
@@ -854,14 +857,14 @@ var FormBuilder = {
 		$('#sectionButton').tab('show');
 
 		$('.error').removeClass('error');
-		if ($('#sectionTitle').val().length > 250 || $('#sectionTitle').val().length < 3) {
+		/*if ($('#sectionTitle').val().length > 250 || $('#sectionTitle').val().length < 3) {
 			$('#sectionTitle').addClass('error');
 			eMsg.push('Section title must be between 3 and 250 characters (currently ' + $('#sectionTitle').val().length + ').');
-		}
-		if ($('#sectionTitle').val().length > 2000) {
+		}*/
+		/*if ($('#sectionTitle').val().length > 2000) {
 			$('#sectionTitle').addClass('error');
 			eMsg.push('Section description must be between 3 and 250 characters (currently ' + $('#sectionTitle').val().length + ').');
-		}
+		}*/
 		if (eMsg.length > 0) {
 			eMsg.push('Changes have NOT been saved.');
 			alert(eMsg.join('\n\n'));
@@ -1040,7 +1043,7 @@ $(document).ready(function() {
 	    };
 	}
 
-	builder = FormBuilder.initialize($('#formJSON').val(), '#formlist');
+	builder = FormBuilder.initialize($('#sectionJson').val(), '#formList');
 	addRTE();
 
 	//$(window).on('scroll', MoveNav).on('resize', MoveNav);

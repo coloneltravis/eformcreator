@@ -10,20 +10,39 @@ a {
   color: #00B7FF;
 }
 
-.formarea {float:left;}
-.formarea #formlist {list-style-type: none;}
-.formarea #formactions {margin-left:30px;}
+#formarea {float:left;}
+#formarea #formactions {margin-left:30px;}
 
+#formarea .grid-container {padding:10px;}
+#formarea .grid-container .addgridleft {float:left; font-size:small; color:#aaa;}
+#formarea .grid-container .addgridright {float:right; font-size:small; color:#aaa;}
 
-.formfield {
-	label {font-weight: bold;}
-	margin: 10px;
-	padding: 5px;
+#formarea .grid-container .grid
+{
+	border:2px dashed #ccc;
+	padding:10px; margin:20px; min-height:6em;
 }
+
+.grid  .gridcell
+{
+	float:left;
+	border:2px solid #ccc; border-radius:7px;
+	margin:1px; min-height:4em;
+}
+
+.grid  .grid-2 { width: 48%; }
+.grid  .grid-3 { width: 32%; }
+.grid  .grid-4 { width: 24%; }
+.grid  .grid-5 { width: 20%; }
+.grid  .grid-6 { width: 15%; }
+
+.grid .highlight-grid { border:2px solid #00c; }
+.grid .selected-grid { border:2px solid #c00; }
+
 
 
 div.toolbox {
-	width:400px;
+	width:20%;
 	float:left;
 }
 
@@ -41,5 +60,8 @@ ul.toolscol li {
 	padding:2px;
 }
 
-ul.toolscol li button.btn {width:160px; text-align:left; white-space:nowrap;}
+ul.toolscol li button.btn {width:95%; text-align:left; white-space:nowrap;}
 ul.toolscol li button.btn img {float:left;margin:2px;}
+
+
+#
