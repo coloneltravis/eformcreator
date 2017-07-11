@@ -15,20 +15,26 @@ a {
 
 #formarea .grid-container {padding:10px;}
 #formarea .grid-container .addgridleft {float:left; font-size:small; color:#aaa;}
-#formarea .grid-container .addgridright {float:right; font-size:small; color:#aaa;}
+#formarea .grid-container .addgridright {font-size:small; color:#aaa;}
 
-#formarea .grid-container .grid
-{
-	border:2px dashed #ccc;
-	padding:10px; margin:20px; min-height:6em;
-}
 
-.grid  .gridcell
-{
+#formarea .grid-container .grid  {
 	float:left;
-	border:2px solid #ccc; border-radius:7px;
-	margin:1px; min-height:4em;
+	min-height:20px;
+	width:95%;
+	border: 2px dashed #ddd;
+	margin:5px; padding:8px;
+	margin-bottom:20px;
 }
+
+#formarea #formlist .grid .gridcell {
+	float:left;
+	border: 2px solid #dadada;
+	border-radius: 7px;
+	margin:1px;
+	min-height:4em;
+}
+
 
 .grid  .grid-2 { width: 48%; }
 .grid  .grid-3 { width: 32%; }
@@ -36,9 +42,17 @@ a {
 .grid  .grid-5 { width: 20%; }
 .grid  .grid-6 { width: 15%; }
 
-.grid .highlight-grid { border:2px solid #00c; }
-.grid .selected-grid { border:2px solid #c00; }
+.highlight-grid {
+    outline: none;
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
+}
 
+.selected-grid {
+    outline: none;
+    border-color: #f00;
+    box-shadow: 0 0 10px #f00;
+}
 
 
 div.toolbox {
