@@ -75,14 +75,11 @@ var formdesigner = {
 		});
 		
 		if (type.match('grid')) {
-			var el = $("<div class='grid-container'/>")
-				.prepend("<span class='addgridleft glyphicon glyphicon-step-backward'/>")
-				.prepend("<span class='addgridright glyphicon glyphicon-step-forward'/>")
-				.appendTo("#formarea");
-
-			$("<div class='grid' />")
-				.append("<div class='gridcell grid-2'/><div class='gridcell grid-2'/>")
-				.appendTo(el);
+				var el = $("<div class='grid-container'/>").appendTo(this.formArea);
+				el.append("<span class='addgridleft glyphicon glyphicon-step-backward'/>")
+				el.append("<span class='addgridright glyphicon glyphicon-step-forward'/>")
+				el.append("<div class='grid'/>");
+				el.find(".grid").append("<div class='gridcell grid-2'/><div class='gridcell grid-2'/>");
 		}
 		else {
 			if (type.match('droplist|radio|check')) {
@@ -162,18 +159,12 @@ var formdesigner = {
 			else if (field.type == 'infolinkpop') field.description = '<a href="http://add-site-here/" target="_blank">Add-text-here</a>';
 			field.type = 'info';
 			display.push.apply(display, ['<div><span class="title">',field.title,'</span></div><div class="desc">',field.description,'</div>']);
-		} else if (field.type === 'maturitymatrix') {
-			display.push.apply(display, ['<span class="title">',field.title,'</span><br />']);
 
 			var typ = 'radio';
 			jQuery.each(field.options, function(o, opt) {
 				display.push.apply(display, ['<div><label class="well"><input type="',typ,'" name="field_',that.radioSet,'" value="',o,'" title="',opt.value,'" ']);
 				if (opt.selected) display.push('checked="checked"');
 				display.push.apply(display, [' /> ',opt.value,'</label>']);
-
-				//console.log(opt);
-				//display.push.apply(display, ['<input type="hidden" id="extrainfo_',opt.id,'" name="extrainfo_',opt.id,'" value="',opt.extrainfo,'" />']);
-				//display.push.apply(display, ['<input type="hidden" id="examples_',opt.id,'" name="examples_',opt.id,'" value="',opt.examples,'" /> </div>']);
 				display.push.apply(display, ['</div>']);
 			});
 			this.radioSet += 1;
@@ -184,8 +175,9 @@ var formdesigner = {
 		if (display.length > 0) {
 			display.unshift('<div class="field">');
 			display.push('<span class="typeLabel">'+field.type+'</span></div>');
-			//var el = jQuery('<li class="question ' + field.type + '"></li>').html(display.join('')).appendTo(".selected-grid");
-			var el = $(".selected-grid").html(display.join(''));
+
+			var el = jQuery('<div class="formfield ' + field.type + '"></div>').html(display.join('')).appendTo(".selected-grid");
+			//var el = $(".selected-grid").html(display.join(''));
 			
 			var fieldData = {}
 			$.extend(true, fieldData, field);
@@ -207,6 +199,22 @@ var formdesigner = {
 		}
 	},
 	
+	edit: function(el) {
+
+		if(el.target.nodeName == 'div' && $(el.target).hasClass('formfield'))
+			el = $(el.target);
+		else
+			el = $(el.target).parents('div.formfield');
+
+		$('#current').removeAttr('id');
+		el.attr('id', 'current');
+
+		this.selected = el.get(0);
+
+		console.log(el.data('prop'));
+	},
+	
+
 	addhighlight: function(e) {
 		$(this).addClass("highlight-grid");
 	},
@@ -230,8 +238,45 @@ $(document).ready(function() {
 	
 	var fd = formdesigner.initialise("#formarea");
 	
-	$(".gridcell").on("mouseover", fd.addhighlight);
-	$(".gridcell").on("mouseout", fd.delhighlight);
-	$(".gridcell").on("click", fd.selectcell);
+	$(document).on("mouseover", ".gridcell", fd.addhighlight);
+	$(document).on("mouseout", ".gridcell", fd.delhighlight);
+	$(document).on("click", ".gridcell", fd.selectcell);
+
+	$(document).on('mouseover', '.grid-container', function(e) {
+		$(this).find(".addgridleft").show();
+		$(this).find(".addgridright").show();
+	});
+
+	$(document).on('mouseout', '.grid-container', function(e) {
+		$(".addgridleft").hide();
+		$(".addgridright").hide();
+	});
+
+	
+	$(document).on('click', '.addgridleft', function(e) {
+		var cellcount = $(this).parent().find(".gridcell").length;
+		
+		if (cellcount < 6) {
+			$(this).parent().find(".gridcell").each(function() {
+				$(this).removeClass();
+				$(this).addClass("gridcell grid-" + parseInt(cellcount+1))
+			});
+			
+			$(this).parent().find(".grid").prepend("<div class='gridcell grid-" + parseInt(cellcount+1) +"'/>");
+		}
+	});
+
+	$(document).on('click', '.addgridright', function(e) {
+		var cellcount = $(this).parent().find(".gridcell").length;
+
+		if (cellcount < 6) {
+			$(this).parent().find(".gridcell").each(function() {
+				$(this).removeClass();
+				$(this).addClass("gridcell grid-" + parseInt(cellcount+1))
+			});
+		
+			$(this).parent().find(".grid").append("<div class='gridcell grid-" + parseInt(cellcount+1) +"'/>");
+		}
+	});
 });
 

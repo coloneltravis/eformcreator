@@ -13,9 +13,9 @@ a {
 #formarea {float:left;}
 #formarea #formactions {margin-left:30px;}
 
-#formarea .grid-container {padding:10px;}
-#formarea .grid-container .addgridleft {float:left; font-size:small; color:#aaa;}
-#formarea .grid-container .addgridright {font-size:small; color:#aaa;}
+#formarea .grid-container { display:block; clear:both; }
+#formarea .grid-container  .addgridleft {display:none; float:left; vertical-align:top; color:#aaa;}
+#formarea .grid-container  .addgridright {display:none; color:#aaa; vertical-align:top;}
 
 
 #formarea .grid-container .grid  {
@@ -27,7 +27,7 @@ a {
 	margin-bottom:20px;
 }
 
-#formarea #formlist .grid .gridcell {
+#formarea .grid .gridcell {
 	float:left;
 	border: 2px solid #dadada;
 	border-radius: 7px;
@@ -39,7 +39,7 @@ a {
 .grid  .grid-2 { width: 48%; }
 .grid  .grid-3 { width: 32%; }
 .grid  .grid-4 { width: 24%; }
-.grid  .grid-5 { width: 20%; }
+.grid  .grid-5 { width: 19%; }
 .grid  .grid-6 { width: 15%; }
 
 .highlight-grid {
@@ -78,4 +78,4 @@ ul.toolscol li button.btn {width:95%; text-align:left; white-space:nowrap;}
 ul.toolscol li button.btn img {float:left;margin:2px;}
 
 
-#
+#settingsdlg {display:none;}
