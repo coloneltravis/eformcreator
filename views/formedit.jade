@@ -86,9 +86,38 @@ block content
 
 		div.pagefooter
 
-div#settingsdlg.dialog
-	#tab1.tab
-	#tab2.tab
-	#tab3.tab
-	#tab4.tab
-	
+	div#settingsdlg.dialog
+		div#settings-tabs
+			ul
+				li
+					a(href='#tab1') General
+				li
+					a(href='#tab2') Validation
+				li
+					a(href='#tab3') Logic
+				li
+					a(href='#tab4') Events
+			#tab1.tab
+				label
+					span Control ID:
+					input(type='text' id="control_id" name='control_id' value='')
+				label
+					span Control Label:
+					input(type='text' id='control_lbl' name='control_lbl' value='')
+			#tab2.tab
+				label
+					span Minimum
+					input(type='text' name='min_value' value='')
+				label
+					span Maximum
+					input(type='text' name='max_value' value='')
+				label
+					span Pattern
+					input(type='text' name='pattern' value='')
+			#tab3.tab
+				div.default
+				div.visibility
+				div.readonly
+			#tab4.tab
+				div.onchange
+				div.onclick

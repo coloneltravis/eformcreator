@@ -53,6 +53,7 @@ var formdesigner = {
 
 		this.bound = {
 			'fields': this.addField.bind(this),
+			'apply': this.applyEdit.bind(this),
 			'addhighlight': this.addhighlight.bind(this),
 			'delhighlight': this.delhighlight.bind(this),
 			'selectcell': this.selectcell.bind(this)
@@ -61,7 +62,23 @@ var formdesigner = {
 		$(".gridcell").on('mouseover', this.bound.addhighlight);
 		$(".gridcell").on('mouseout', this.bound.delhighlight);
 		$(".gridcell").on('click', this.bound.selectcell);
+	
 
+		this.settingsdlg = $( "#settingsdlg" ).dialog({
+		  autoOpen: false,
+		  title: "Control Settings",
+		  height: 350,
+		  width: 500,
+		  modal: true,
+		  resizable: false,
+		  buttons: {
+				"Apply": this.apply
+			},
+		  close: function() {
+			  $(this).dialog( "close" );
+		  }
+		});	
+	
 		return this;
 	},
 
@@ -168,8 +185,6 @@ var formdesigner = {
 				display.push.apply(display, ['</div>']);
 			});
 			this.radioSet += 1;
-
-			//display.push.apply(display, ['<div class="areagroup"><label>Key Strengths<br/><textarea name="field" id="field" cols="',field.fieldSize,'" rows="',field.rows,'"></textarea></label><br /><label>Constraints<br/><textarea name="field" id="field" cols="',field.fieldSize,'" rows="',field.rows,'"></textarea></label><br /><label>Actions<br/><textarea name="field" id="field" cols="',field.fieldSize,'" rows="',field.rows,'"></textarea></label></div>']);
 		}
 
 		if (display.length > 0) {
@@ -211,9 +226,130 @@ var formdesigner = {
 
 		this.selected = el.get(0);
 
+		this.settingsdlg.dialog("open");
+		this.settingsdlg.tabs();
+
+		this.settingsdlg.control_id = el.data('prop').id;
+
 		console.log(el.data('prop'));
 	},
-	
+
+
+	applyEdit: function(e) {
+		var el = $(that.selected);
+		var eMsg = [];
+
+		el.data('prop').changed = true;
+
+		$('#linkDisplay').css('visibility', 'hidden');
+
+		if (el.data('prop').type.match('droplist|check|radio|maturitymatrix')) {
+			var optType = (el.data('prop').type == 'check') ? 'checkbox' : 'radio';
+			var options = this.edits.options.find('li');
+			var opts = [];
+			var text = [];
+
+			options.each(function() {
+				ip = $(this).find('input[type=text]');
+
+				opts.push({
+					'selected': $(this).find('input[type='+optType+']').get(0).checked,
+					'value': ip.val(),
+					'id': ip.attr('id').split('_')[1]
+				});
+
+				if (ip.val().length == 0) ip.addClass('error');
+				if ($.inArray(ip.val(), text) == -1) text.push(ip.val());
+				else ip.addClass('error');
+			});
+
+			var eLen = eMsg.length;
+			var reqOptions = (optType == 'checkbox') ? 1 : 2;
+			if (opts.length < reqOptions) {
+				$('#options_label').addClass('error');
+				eMsg.push('This question type requires ' + reqOptions + ' or more possible options.');
+			}
+
+			if (this.edits.options.find('.error').length > 0) {
+				eMsg.push('All options must be unique and not empty.');
+			}
+
+			if (eMsg.length == 0) {
+				var newOpts = [];
+				var hidden1 = [];
+				var hidden2 = [];
+				if (el.data('prop').type == 'droplist') {
+					sel = el.find('select').get(0);
+					sel.options.length = 0;
+					$.each(opts, function(index, opt) {
+						sel.options[index] = new Option(opt.value, opt.id);
+						sel.options[index].selected = (opt.selected);
+					});
+				}
+				else {
+					el.find('.field div').each(function() {
+						$(this).remove();
+					});
+					var place = el.find('.typeLabel');
+
+					$.each(opts, function(index, opt) {
+						newOpts = ['<label><input type="',optType,'" title="',opt.value,'" value="',opt.id,'" name="field_',that.radioSet,'"',(opt.selected) ? 'checked="checked"' : '','/> ',opt.value,'</label>'];
+
+						var optid = opt.id;
+						if (opt.id == 0) optid = index;
+
+						place.before($('<div>' + newOpts.join('') + '</div>'));
+					});
+
+					this.radioSet += 1;
+
+				}
+				el.data('prop').options = opts;
+			}
+		}
+		if (eMsg.length > 0) {
+			eMsg.push('Changes have NOT been applied.');
+			alert(eMsg.join('\n\n'));
+			return;
+		}
+
+		el.data('prop').qno = this.edits.qno.val();
+		el.data('prop').title = this.edits.title.val();
+
+		this.edits.desc.val(tinyMCE.get('description').getContent());
+		el.data('prop').description = this.edits.desc.val();
+		el.data('prop').description = tinyMCE.get('description').getContent();
+		
+		el.data('prop').defaultvalue = this.edits.defaultvalue.val();
+
+		el.data('prop').required = (this.edits.req.get(0).checked) ? 1 : 0;
+
+		el.data('prop').displaydesc = this.edits.display.val();
+		el.data('prop').fieldSize = this.edits.fieldSize.val();
+		el.find('.title').html(el.data('prop').title);
+
+		if (el.data('prop').type == 'info') {
+			el.find('div.desc').html(el.data('prop').description);
+		}
+
+		if (el.data('prop').type.match('text|number|date|phone|email|url')) {
+			el.find('input[type=text]').size = el.data('prop').fieldSize;
+			el.find('input[type=text]').val(el.data('prop').defaultvalue);
+		} else if (el.data('prop').type == 'area') {
+			el.data('prop').cols = (el.data('prop').fieldSize > 20) ? Math.round(el.data('prop').fieldSize/10) : 3;
+			el.find('textarea').attr({
+				'cols': el.data('prop').fieldSize,
+				'rows': el.data('prop').cols
+			});
+		} else if (el.data('prop').type == 'droplist') {
+			el.find('select').css('width', el.data('prop').size + 'ex');
+		}
+
+		if(e.target.id && (e.target.id == 'apply' || e.target.id == 'apply2')) {
+			$('#current').removeAttr('id');
+		}
+	},	
+
 
 	addhighlight: function(e) {
 		$(this).addClass("highlight-grid");
@@ -228,19 +364,31 @@ var formdesigner = {
 			$(this).removeClass("selected-grid");
 		});
 		$(this).addClass("selected-grid");
+	},
+	
+	deletecell: function(e) {
+		console.log(e);
+		if (e.keyCode == 46) {
+			console.log('del key pressed');
+			$(".selected-grid").remove();
+		}
 	}
 
 }
 
 
 
+
 $(document).ready(function() {
-	
+
 	var fd = formdesigner.initialise("#formarea");
+
+
 	
 	$(document).on("mouseover", ".gridcell", fd.addhighlight);
 	$(document).on("mouseout", ".gridcell", fd.delhighlight);
 	$(document).on("click", ".gridcell", fd.selectcell);
+	$(document).on("keydown", ".selected-grid", fd.deletecell);
 
 	$(document).on('mouseover', '.grid-container', function(e) {
 		$(this).find(".addgridleft").show();
