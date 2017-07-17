@@ -34,15 +34,12 @@ var formdesigner = {
 		this.defaultField = {
 			'id': 0,
 			'type': 'text',
-			'qno': '',
 			'title': 'title',
 			'description': '',
 			'displaydesc': 'Display', // Display|Hide|Icon|Icon Blue
-			'cats': ['0'],
-			'perm': ['0'],
 			'required': 0, // 0|1
 			'hidenumber' : 0, //0|1
-			'fieldSize': 20,
+			'fieldSize': 12,
 			'rows': 3,
 			'options': [],
 			'changed': true,
@@ -51,9 +48,37 @@ var formdesigner = {
 		// 1 - value, 3 - id, 5 - type, 7 - checked
 		this.newOption = ['<input type="text" name="option" size="25" value="','','" id="opt_','0','" /><input type="','','" name="optSelect" title="Default this option" ','',' /> <img src="/img/add.png" height="16" width="16" alt="Create a new entry" /> <img src="/img/delete.png" height="16" width="16" alt="Delete this entry" />'];
 
+		
+		this.ed = {
+			'opt': $('#options_label'),
+			'fieldSize': $('#size_label'),
+			'req': $('#required_label'),
+			'hidenum': $('#hidenumber_label'),
+			'desc': $('#description_label'),
+			'def': $('#default_label')
+		};
+
+		this.edits = {
+			'id': $('#control_id'),
+			'title': $('#title'),
+			'desc': $('#description'),
+			'display': $('#visibility'),
+			'options': $('#options_label ol'),
+			'req': $('#required'),
+			'hidenum': $('#hidenumber'),
+			'dataType': $('#data_type'),
+			'fieldSize': $('#field_size'),
+			'defaultvalue': $('#defaultvalue'),
+			'tooltip': $('#tooltip'),
+			'minvalue': $('#min_value'),
+			'maxvalue': $('#max_value'),
+			'input_mask': $('#input_mask')
+		};		
+
 		this.bound = {
 			'fields': this.addField.bind(this),
 			'apply': this.applyEdit.bind(this),
+			'editOption': this.editOption.bind(this),
 			'addhighlight': this.addhighlight.bind(this),
 			'delhighlight': this.delhighlight.bind(this),
 			'selectcell': this.selectcell.bind(this)
@@ -63,6 +88,7 @@ var formdesigner = {
 		$(".gridcell").on('mouseout', this.bound.delhighlight);
 		$(".gridcell").on('click', this.bound.selectcell);
 	
+		this.autonumber = 1;
 
 		this.settingsdlg = $( "#settingsdlg" ).dialog({
 		  autoOpen: false,
@@ -71,26 +97,30 @@ var formdesigner = {
 		  width: 500,
 		  modal: true,
 		  resizable: false,
-		  buttons: {
-				"Apply": this.apply
-			},
-		  close: function() {
-			  $(this).dialog( "close" );
-		  }
+		    buttons:
+			{
+				"Apply": this.applyEdit
+			}
 		});	
-	
+
+		$('#options_label').click(this.bound.editOption);			
+
 		return this;
 	},
 
+	
+	// when a new control is selected from the left toolbar to add to the selected gridcell
 	addField: function(e) {
 		e.preventDefault();
 		var type = e.target.id.slice(3);
 		var fieldTmp = jQuery.extend(true, {}, this.defaultField);
 		var field = jQuery.extend(true, fieldTmp, {
+			'id': 'control_' + parseInt(this.autonumber),
 			'type': type,
 			'title': this.defaultTitles[type]
 		});
-		
+		this.autonumber++;
+	
 		if (type.match('grid')) {
 				var el = $("<div class='grid-container'/>").appendTo(this.formArea);
 				el.append("<span class='addgridleft glyphicon glyphicon-step-backward'/>")
@@ -111,7 +141,8 @@ var formdesigner = {
 		}
 	},
 
-	// outputs fields in display section
+
+	// build the html for the selected control type
 	build: function(field) {
 		var fieldTmp = jQuery.extend(true, {}, this.defaultField);
 		var fieldTmp2 = jQuery.extend(true, fieldTmp, field);
@@ -214,6 +245,8 @@ var formdesigner = {
 		}
 	},
 	
+	
+	// when a control field is clicked to edit its properties
 	edit: function(el) {
 
 		if(el.target.nodeName == 'div' && $(el.target).hasClass('formfield'))
@@ -229,12 +262,79 @@ var formdesigner = {
 		this.settingsdlg.dialog("open");
 		this.settingsdlg.tabs();
 
-		this.settingsdlg.control_id = el.data('prop').id;
+
+		var optType = (el.data('prop').type == 'check') ? 'checkbox' : 'radio';
+		var checkit, newOpt, itemid;
+		this.edits.options.html('');
+		jQuery.each(el.data('prop').options, function(i, item) {
+			checkit = (item.selected || item.checked) ? 'checked="checked"' : '';
+			// 1 - value, 3 - id, 5 - type, 7 - checked
+
+			newOpt = that.newOption.slice();
+			newOpt[1] = item.value;	newOpt[3] = item.id;
+			newOpt[5] = optType;	newOpt[7] = checkit;
+			$('<li>' + newOpt.join('') + '</li>').appendTo(that.edits.options);
+		});
+
+
+		if (el.data('prop').type.match('(text|url|phone|number|email)')) {
+			this.ed.opt.hide();
+			this.ed.fieldSize.show();
+			this.ed.def.show();
+		} else if (el.data('prop').type == 'area') {
+			this.ed.opt.hide();
+			this.ed.fieldSize.show();
+			this.ed.def.hide();
+		} else if (el.data('prop').type.match('(radio|check|droplist)')) {
+			this.ed.def.hide();
+			if (el.data('prop').type == 'droplist') this.ed.fieldSize.show();
+			else this.ed.fieldSize.hide();
+
+			this.ed.opt.show();
+			this.ed.opt.find('a#options_add').show();
+
+
+		} else if (el.data('prop').type.match('(break|info)')) {
+			this.ed.def.hide();
+			this.ed.opt.hide();
+			this.ed.fieldSize.hide();
+			this.ed.req.hide();
+			this.ed.hidenum.hide();
+			if (el.data('prop').type == 'break') this.ed.desc.hide();
+			else this.ed.desc.show();
+		} else {
+			this.ed.opt.hide();
+			this.ed.fieldSize.hide();
+			this.ed.def.hide();
+		}
+
+		if (!el.data('prop').type.match('(break|info)')) {
+			this.ed.desc.show();
+			this.ed.req.show();
+			this.ed.hidenum.show();
+		}
+		// Load field properties
+		this.edits.id.val(el.data('prop').id);
+		this.edits.title.val(el.data('prop').title);
+		this.edits.defaultvalue.val(el.data('prop').defaultvalue);
+		this.edits.desc.val(el.data('prop').description);
+
+		this.edits.req.get(0).checked = (el.data('prop').required == 1) ? true : false;
+		this.edits.display.find('option').each(function() {
+			this.selected = (this.value == el.data('prop').displaydesc);
+		});
+		this.edits.fieldSize.find('option').each(function() {
+			this.selected = (this.value == el.data('prop').fieldSize);
+		});
+
+
+		//$("#settingsdlg #control_id").val(el.data('prop').id);
 
 		console.log(el.data('prop'));
 	},
 
 
+	// when the edited properties are applied from the settings dialog box
 	applyEdit: function(e) {
 		var el = $(that.selected);
 		var eMsg = [];
@@ -243,7 +343,7 @@ var formdesigner = {
 
 		$('#linkDisplay').css('visibility', 'hidden');
 
-		if (el.data('prop').type.match('droplist|check|radio|maturitymatrix')) {
+		if (el.data('prop').type.match('droplist|check|radio')) {
 			var optType = (el.data('prop').type == 'check') ? 'checkbox' : 'radio';
 			var options = this.edits.options.find('li');
 			var opts = [];
@@ -267,7 +367,7 @@ var formdesigner = {
 			var reqOptions = (optType == 'checkbox') ? 1 : 2;
 			if (opts.length < reqOptions) {
 				$('#options_label').addClass('error');
-				eMsg.push('This question type requires ' + reqOptions + ' or more possible options.');
+				eMsg.push('This control type requires ' + reqOptions + ' or more possible options.');
 			}
 
 			if (this.edits.options.find('.error').length > 0) {
@@ -313,18 +413,12 @@ var formdesigner = {
 			return;
 		}
 
-		el.data('prop').qno = this.edits.qno.val();
 		el.data('prop').title = this.edits.title.val();
-
-		this.edits.desc.val(tinyMCE.get('description').getContent());
 		el.data('prop').description = this.edits.desc.val();
-		el.data('prop').description = tinyMCE.get('description').getContent();
-		
 		el.data('prop').defaultvalue = this.edits.defaultvalue.val();
 
-		el.data('prop').required = (this.edits.req.get(0).checked) ? 1 : 0;
-
-		el.data('prop').displaydesc = this.edits.display.val();
+		el.data('prop').required = this.edits.req.get(0).checked ? 1 : 0;
+		el.data('prop').visibility = this.edits.visibility.val();
 		el.data('prop').fieldSize = this.edits.fieldSize.val();
 		el.find('.title').html(el.data('prop').title);
 
@@ -345,10 +439,46 @@ var formdesigner = {
 			el.find('select').css('width', el.data('prop').size + 'ex');
 		}
 
-		if(e.target.id && (e.target.id == 'apply' || e.target.id == 'apply2')) {
+		if(e.target.id && e.target.id == 'apply') {
 			$('#current').removeAttr('id');
 		}
 	},	
+
+	
+	editOption: function(e) {
+		var el = e.target;
+		if (el.nodeName == 'A') {
+			e.preventDefault();
+			if (el.id == 'option_add') {
+				// 5 - type
+				var newOpt = that.newOption.slice();
+				newOpt[5] = ($(that.selected).data('prop').type == 'check') ? 'checkbox' : 'radio';
+				$('<li>' + newOpt.join('') + '</li>').prependTo(this.edits.options);
+				this.ed.opt.show();
+			} else {
+				this.edits.options.find('input[type=checkbox], input[type=radio]').each(function(){
+					this.checked = false;
+				});
+			}
+		} else if (el.nodeName == 'IMG') {
+			var item = $(el).parents('li').get(0);
+			if (el.alt == 'Create a new entry') {
+				var newOpt = that.newOption.slice();
+				// 5 - type
+				newOpt[5] = ($(that.selected).data('prop').type == 'check') ? 'checkbox' : 'radio';
+				$(item).after($('<li>' + newOpt.join('') + '</li>'));
+				this.ed.opt.show();
+			}
+			else if (el.alt == 'Delete this entry') {
+				$(item).remove();
+				this.ed.opt.show();
+			}
+			else if (el.alt == 'Additional information') {
+				//item.remove();
+				this.ed.opt.show();
+			}
+		}
+	},
 
 
 	addhighlight: function(e) {

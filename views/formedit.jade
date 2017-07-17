@@ -96,28 +96,53 @@ block content
 				li
 					a(href='#tab3') Logic
 				li
-					a(href='#tab4') Events
+					a(href='#tab4') List options
 			#tab1.tab
 				label
 					span Control ID:
 					input(type='text' id="control_id" name='control_id' value='')
 				label
-					span Control Label:
-					input(type='text' id='control_lbl' name='control_lbl' value='')
+					span Title:
+					input(type='text' id='title' name='title' value='')
+				label
+					span Description:
+					textarea(rows='2' cols='50' id='desc' name='desc')
+				label
+					span Use as tooltip:
+					input(type="checkbox" id='tooltip' name='tooltip')
 			#tab2.tab
 				label
+					span Data Type
+					input(type='text' name='data_type' value='')
+				label
+					span Field Size
+					input(type='text' id='field_size' value='')
+				label
 					span Minimum
-					input(type='text' name='min_value' value='')
+					input(type='text' id='min_value' value='')
 				label
 					span Maximum
-					input(type='text' name='max_value' value='')
+					input(type='text' id='max_value' value='')
 				label
-					span Pattern
-					input(type='text' name='pattern' value='')
+					span Input mask
+					input(type='text' id='input_mask' value='')
+				label#required_label
+					span Required?
+					input(type='checkbox' id='required' name='required' value='')
 			#tab3.tab
-				div.default
-				div.visibility
-				div.readonly
+				div#default_label
+					span Default Value:
+					textarea(rows='2' cols='50' id='defaultvalue' name='defaultvalue')
+				div#visibility
+					span Visibility:
+					textarea(rows='2' cols='50' id='visibility' name='visibility')
+				div#readonly
 			#tab4.tab
-				div.onchange
-				div.onclick
+				div#options_label
+					ol
+						li
+						li
+						li
+					p
+						a.btn.btn-default#option_add(href='#' role="button") Add
+						a.btn.btn-default#option_clear(href='#' role="button") Clear
