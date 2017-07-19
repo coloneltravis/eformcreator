@@ -77,7 +77,7 @@ var formdesigner = {
 
 		this.bound = {
 			'fields': this.addField.bind(this),
-			'apply': this.applyEdit.bind(this),
+			'applyEdit': this.applyEdit.bind(this),
 			'editOption': this.editOption.bind(this),
 			'addhighlight': this.addhighlight.bind(this),
 			'delhighlight': this.delhighlight.bind(this),
@@ -99,7 +99,7 @@ var formdesigner = {
 		  resizable: false,
 		    buttons:
 			{
-				"Apply": this.applyEdit
+				"Apply": that.applyEdit
 			}
 		});	
 
@@ -259,9 +259,14 @@ var formdesigner = {
 
 		this.selected = el.get(0);
 
+		this.settingsdlg.dialog("option", "buttons", [ { text: "Apply",
+															icon: "ui-icon-",
+															click: function(e) {that.applyEdit(e);
+																				$(this).dialog("close");
+																			}
+															} ] );
 		this.settingsdlg.dialog("open");
 		this.settingsdlg.tabs();
-
 
 		var optType = (el.data('prop').type == 'check') ? 'checkbox' : 'radio';
 		var checkit, newOpt, itemid;
@@ -326,11 +331,6 @@ var formdesigner = {
 		this.edits.fieldSize.find('option').each(function() {
 			this.selected = (this.value == el.data('prop').fieldSize);
 		});
-
-
-		//$("#settingsdlg #control_id").val(el.data('prop').id);
-
-		console.log(el.data('prop'));
 	},
 
 
@@ -340,7 +340,7 @@ var formdesigner = {
 		var eMsg = [];
 
 		el.data('prop').changed = true;
-
+		
 		$('#linkDisplay').css('visibility', 'hidden');
 
 		if (el.data('prop').type.match('droplist|check|radio')) {
@@ -413,12 +413,13 @@ var formdesigner = {
 			return;
 		}
 
+		el.data('prop').id = this.edits.id.val();
 		el.data('prop').title = this.edits.title.val();
 		el.data('prop').description = this.edits.desc.val();
 		el.data('prop').defaultvalue = this.edits.defaultvalue.val();
 
 		el.data('prop').required = this.edits.req.get(0).checked ? 1 : 0;
-		el.data('prop').visibility = this.edits.visibility.val();
+		el.data('prop').visibility = this.edits.display.val();
 		el.data('prop').fieldSize = this.edits.fieldSize.val();
 		el.find('.title').html(el.data('prop').title);
 
