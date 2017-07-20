@@ -1,6 +1,6 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 
@@ -79,3 +79,10 @@ ul.toolscol li button.btn img {float:left;margin:2px;}
 
 
 #settingsdlg {display:none;}
+
+.tab {}
+.tab .tabcol1 {float:left; width:49%; margin-right:5px;}
+.tab .tabcol2 {}
+
+.tab  label {margin-botton: 5px; padding:6px; display:block;}
+.tab label .heading {width:50em; padding-right:3px; font-weight:bold;}

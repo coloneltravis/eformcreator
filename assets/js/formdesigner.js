@@ -93,14 +93,11 @@ var formdesigner = {
 		this.settingsdlg = $( "#settingsdlg" ).dialog({
 		  autoOpen: false,
 		  title: "Control Settings",
+		  classes: { "ui-dialog-titlebar-close": "ui-icon ui-icon-close" },
 		  height: 350,
 		  width: 500,
 		  modal: true,
-		  resizable: false,
-		    buttons:
-			{
-				"Apply": that.applyEdit
-			}
+		  resizable: false
 		});	
 
 		$('#options_label').click(this.bound.editOption);			
@@ -112,6 +109,12 @@ var formdesigner = {
 	// when a new control is selected from the left toolbar to add to the selected gridcell
 	addField: function(e) {
 		e.preventDefault();
+		
+		var selectedCell = $(".selected-grid");
+		if ($.trim(selectedCell.html()) != '') {
+			return;
+		}
+			
 		var type = e.target.id.slice(3);
 		var fieldTmp = jQuery.extend(true, {}, this.defaultField);
 		var field = jQuery.extend(true, fieldTmp, {
