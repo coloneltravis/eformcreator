@@ -29,12 +29,14 @@ _eForm Creator_ is a responsive web application for creating and managing eforms
 - Single-line textbox.
 - Multi-line Text area.
 - Date picker.
+- TIme entry.
 - Radio button lists
 - Checkbox lists.
 - Dropdown lists.
 - Boolean choice (yes/no).
-- Upload binary files.
+- Binary file upload.
 - Static image.
+- Slider.
 - Name.
 - Address.
 - Phone.
