@@ -1,0 +1,71 @@
+div#settingsdlg.dialog
+	div#settings-tabs
+		ul
+			li
+				a(href='#tab1') General
+			li
+				a(href='#tab2') Validation
+			li
+				a(href='#tab3') Logic
+			li
+				a(href='#tab4') List options
+			li
+				a(href='#tab5') Events
+		#tab1.tab
+			label
+				div.heading Control ID:
+				input(type='text' id="control_id" name='control_id' value='' size="10")
+			label
+				div.heading Title:
+				input(type='text' id='title' name='title' value='' size="20")
+			label
+				div.heading Description:
+				textarea(rows='2' cols='50' id='desc' name='desc')
+			label
+				span.heading Use as tooltip:
+				input(type="checkbox" id='tooltip' name='tooltip')
+			label
+				span.heading CSS class:
+				input(type="text" id='css_class' name='css_class' size="12")
+		#tab2.tab
+			div.tabcol1
+				label
+					div.heading Data type:
+					input(type='text' name='data_type' value='' size="10")
+				label
+					div.heading Field size:
+					input(type='text' id='field_size' value='' size="5")
+			div.tabcol2
+				label
+					div.heading Minimum value:
+					input(type='text' id='min_value' value='' size="5")
+				label
+					div.heading Maximum value:
+					input(type='text' id='max_value' value='' size="5")
+				label
+					div.heading Input mask:
+					input(type='text' id='input_mask' value='' size="10")
+				label#required_label
+					span.heading Required?
+					input(type='checkbox' id='required' name='required' value='')
+		#tab3.tab
+			div.tabcol1
+				label#default_label
+					div.heading Default Value:
+					textarea(rows='2' cols='20' id='defaultvalue' name='defaultvalue')
+				label#visibility
+					div.heading Visibility:
+					textarea(rows='2' cols='20' id='visibility' name='visibility')
+			div.tabcol2
+				label#readonly_label
+					div.heading Readonly:
+					textarea(rows='2' cols='20' id='readonly' name='readonly')
+		#tab4.tab
+			div#options_label
+				ol
+					li
+					li
+					li
+				p
+					a.btn.btn-default#option_add(href='#' role="button") Add
+					a.btn.btn-default#option_clear(href='#' role="button") Clear
