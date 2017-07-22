@@ -10,7 +10,7 @@ block content
 		h3!= obj.desc
 		div.pagecontent
 			form(action='/saveform' id='sectionForm' method='post')
-				input#sectionJson(type='hidden' name='sectionJson')= fields
+				input#formJson(type='hidden' name='formJson')= fields
 
 			div.toolbox.col-md-3
 				ul.toolscol
@@ -28,6 +28,9 @@ block content
 							img(src='/img/number.png')
 					li
 						button.btn#addurl(name="url") Url
+							img(src='/img/url.png')
+					li
+						button.btn#addpushbutton(name="pushbutton") Button
 							img(src='/img/url.png')
 					li
 						button.btn#adddroplist(name="droplist") Dropdown List
@@ -60,6 +63,9 @@ block content
 						button.btn#addtime(name="timefield") Time
 							img(src='/img/time.png')
 					li
+						button.btn#addinfolink(name="infolink") Infolink
+							img(src='/img/info.png')
+					li
 						button.btn#adddocupload(name="docupload") Document Upload
 							img(src='/img/docupload.png')
 					li
@@ -79,7 +85,7 @@ block content
 					div.clearfix
 
 				div.clearfix
-			div#formactions
+			div#formactions.clearfix
 				a.btn.btn-primary#save(href='#') Save
 				a.btn.btn-default(href='/cancel') Cancel
 				div.clearfix

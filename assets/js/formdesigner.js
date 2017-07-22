@@ -16,9 +16,8 @@ var formdesigner = {
 			'name': 'Name',
 			'date': 'Date',
 			'phone': 'Telephone',
-			'info': 'Information',
-			'infolink': 'Information',
-			'infolinkpop': 'Information',
+			'infolink': 'infolink',
+			'pushbutton': 'Push button',
 			'yesno': 'Yes No Title',
 			'break': 'Line break title',
 			'time': 'Time',
@@ -28,8 +27,6 @@ var formdesigner = {
 			'check': 'Check boxes title',
 			'area': 'Text area title',
 			'docupload': 'Document upload',
-			'maturitymatrix': 'Maturity matrix'
-
 		};
 		this.defaultField = {
 			'id': 0,
@@ -81,12 +78,14 @@ var formdesigner = {
 			'editOption': this.editOption.bind(this),
 			'addhighlight': this.addhighlight.bind(this),
 			'delhighlight': this.delhighlight.bind(this),
-			'selectcell': this.selectcell.bind(this)
+			'selectcell': this.selectcell.bind(this),
+			'save': this.save.bind(this)
 		};
 		$('.toolbox .btn').click(this.bound.fields);
 		$(".gridcell").on('mouseover', this.bound.addhighlight);
 		$(".gridcell").on('mouseout', this.bound.delhighlight);
 		$(".gridcell").on('click', this.bound.selectcell);
+		$("#save").on('click', this.bound.save);
 	
 		this.autonumber = 1;
 
@@ -196,7 +195,9 @@ var formdesigner = {
 		} else if (field.type === 'postal') {
 			display.push.apply(display, ['<span class="title">',field.title,'</span><br /><label>Address 1<br /><input type="text" size="30" /></label><br /><label>Address 2<br /><input type="text" size="30" /></label><br /><label>City/Town<br /><input type="text" size="20" /></label><br /><label>Postcode<br /><input type="text" size="10" /></label>']);
 		} else if (field.type === 'url') {
-			display.push.apply(display, ['<label class="well"><span class="title">',field.title,'</span><br /><input type="text" name="field" value="http://" size="',field.fieldSize,'" /></label>']);
+			display.push.apply(display, ['<label class="well"><a href="#"><span class="title">',field.title,'</span></a><br /></label>']);
+		} else if (field.type === 'pushbutton') {
+			display.push.apply(display, ['<label class="well"><button name="field" value="',field.title,'"><span class="title">',field.title,'</span></button></label>']);
 		} else if (field.type === 'name') {
 			display.push.apply(display, ['<span class="title">',field.title,'</span><table><tr><td><input type="text" name="field" size="5" /></td><td><input type="text" name="field" size="20" /></td><td><input type="text" name="field" size="20" /></td></tr><tr><td>[Title]</td><td>[Firstname]</td><td>[Lastname]</td></tr></table>']);
 		} else if (field.type === 'time') {
@@ -484,7 +485,57 @@ var formdesigner = {
 		}
 	},
 
+	
+	save: function(e) {
+		if (e)
+			e.preventDefault();
+		var eMsg = [];
+		
+		$('.error').removeClass('error');
 
+		if (eMsg.length > 0) {
+			eMsg.push('Changes have NOT been saved.');
+			alert(eMsg.join('\n\n'));
+		}
+		else {
+			this.buildSave();
+			this.leaving = true;
+			//$('#sectionForm').submit();
+		}
+	},
+
+
+	buildSave: function() {
+		var formdoc = [];
+
+		$('#formarea > .grid-container').each(function() {
+
+			var grid = { rows: [] };
+			
+			var row = { cols: [] };
+			grid.rows.push(row);
+
+			
+			$(this).children(".grid").each(function() {
+
+
+				$(this).children(".gridcell").each( function() {
+
+					var control = $(this).children('.formfield').data('prop');
+					grid.rows[0].cols.push(control);
+
+					
+					//console.log($(this).children('.formfield').data('prop'));
+					//formdoc.push($(this).children('.formfield').data('prop'));					
+				});				
+			});
+			
+			formdoc.push(grid);
+		});
+		$('#formJson').val(JSON.stringify(formdoc));
+	},
+
+	
 	addhighlight: function(e) {
 		$(this).addClass("highlight-grid");
 	},
