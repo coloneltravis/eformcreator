@@ -90,32 +90,11 @@ var FormBuilder = {
 		                 'matrixinfo-clean',  // status of popup icon
 		                 '" aria-hidden="true"></span></a>'];
 
-		// 1 - value, 3 - id, 5 - name
-		this.newExtraInfo = ['<input type="hidden" value="',
-		                     '',   				// value
-		                     '" id="extrainfo_',
-		                     '0',
-		                     '" name="extrainfo_',
-		                     '0',				// name
-		                     '" />'];
-
-		// 1 - value, 3 - id, 5 - name
-		this.newExamples = ['<input type="hidden" value="',
-		                     '',   				// value
-		                     '" id="examples_',
-		                     '0',				// id
-		                     '" name="examples_',
-		                     '0',				// name
-		                     '" />'];
-
 		this.radioSet = 0;
 		//var form = jQuery.parseJSON(json);
-		var form = json;
+		var formdoc = json;
 
-		jQuery.each(form, function(i, val) {
-
-			val.perm = val.perm.split(',').remove('');
-			val.cats = val.cats.split(',').remove('');
+		jQuery.each(formdoc, function(i, val) {
 			val.changed = false;
 			that.build(val);
 		});
@@ -140,7 +119,6 @@ var FormBuilder = {
 
 		this.edits = {
 			'id': $('#recordid'),
-			'qno' : $('#qno'),
 			'title': $('#title'),
 			'desc': $('#description'),
 			'display': $('#displayselect'),
@@ -148,10 +126,8 @@ var FormBuilder = {
 			'req': $('#required'),
 			'hidenum': $('#hidenumber'),
 			'fieldSize': $('#size'),
-			'cats': $('#cats'),
-			'permAll': $('#all'),
-			'permGroups': $('#perm'),
-			'defaultvalue': $('#defaultvalue')
+			'defaultvalue': $('#defaultvalue'),
+			'cssClass': $('css_class')
 		};
 		//this.ip = $('#inputForm');
 		//this.ip.$eff = this.ip.effect('padding-top');

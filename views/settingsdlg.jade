@@ -29,20 +29,25 @@ div#settingsdlg.dialog
 				input(type="text" id='css_class' name='css_class' size="12")
 		#tab2.tab
 			div.tabcol1
-				label
+				label#datatype_label
 					div.heading Data type:
-					input(type='text' name='data_type' value='' size="10")
-				label
-					div.heading Field size:
+					select(name='data_type' id='data_type')
+						option(value='A') Alpha only
+						option(value='AN') Alpha-numeric
+						option(value='NI') Numeric - integers
+						option(value='ND') Numeric - decimals
+						option(value='B') Boolean
+				label#size_label
+					div.heading Field size (px):
 					input(type='text' id='field_size' value='' size="5")
 			div.tabcol2
-				label
+				label#minmax_label
 					div.heading Minimum value:
 					input(type='text' id='min_value' value='' size="5")
-				label
+					br
 					div.heading Maximum value:
 					input(type='text' id='max_value' value='' size="5")
-				label
+				label#mask_label
 					div.heading Input mask:
 					input(type='text' id='input_mask' value='' size="10")
 				label#required_label
@@ -61,7 +66,7 @@ div#settingsdlg.dialog
 					div.heading Readonly:
 					textarea(rows='2' cols='20' id='readonly' name='readonly')
 		#tab4.tab
-			div#options_label
+			label#options_label
 				ol
 					li
 					li
@@ -69,3 +74,11 @@ div#settingsdlg.dialog
 				p
 					a.btn.btn-default#option_add(href='#' role="button") Add
 					a.btn.btn-default#option_clear(href='#' role="button") Clear
+		#tab5.tab
+			label#events_label
+				p
+					div.heading onClick:
+					textarea(rows='2' cols='20' id='onclick' name='onclick')
+				p
+					div.heading onChange:
+					textarea(rows='2' cols='20' id='onchange' name='onchange')

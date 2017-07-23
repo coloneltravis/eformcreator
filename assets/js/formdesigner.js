@@ -35,12 +35,12 @@ var formdesigner = {
 			'description': '',
 			'displaydesc': 'Display', // Display|Hide|Icon|Icon Blue
 			'required': 0, // 0|1
-			'hidenumber' : 0, //0|1
 			'fieldSize': 12,
 			'rows': 3,
 			'options': [],
 			'changed': true,
-			'defaultvalue': ''
+			'defaultvalue': '',
+			'cssClass': ''
 		};
 		// 1 - value, 3 - id, 5 - type, 7 - checked
 		this.newOption = ['<input type="text" name="option" size="25" value="','','" id="opt_','0','" /><input type="','','" name="optSelect" title="Default this option" ','',' /> <img src="/img/add.png" height="16" width="16" alt="Create a new entry" /> <img src="/img/delete.png" height="16" width="16" alt="Delete this entry" />'];
@@ -50,9 +50,10 @@ var formdesigner = {
 			'opt': $('#options_label'),
 			'fieldSize': $('#size_label'),
 			'req': $('#required_label'),
-			'hidenum': $('#hidenumber_label'),
 			'desc': $('#description_label'),
-			'def': $('#default_label')
+			'def': $('#default_label'),
+			'minmax': $('minmax_label'),
+			'datatype': $('datatype_label')
 		};
 
 		this.edits = {
@@ -62,10 +63,10 @@ var formdesigner = {
 			'display': $('#visibility'),
 			'options': $('#options_label ol'),
 			'req': $('#required'),
-			'hidenum': $('#hidenumber'),
 			'dataType': $('#data_type'),
 			'fieldSize': $('#field_size'),
 			'defaultvalue': $('#defaultvalue'),
+			'cssClass': $('css_class'),
 			'tooltip': $('#tooltip'),
 			'minvalue': $('#min_value'),
 			'maxvalue': $('#max_value'),
@@ -308,7 +309,6 @@ var formdesigner = {
 			this.ed.opt.hide();
 			this.ed.fieldSize.hide();
 			this.ed.req.hide();
-			this.ed.hidenum.hide();
 			if (el.data('prop').type == 'break') this.ed.desc.hide();
 			else this.ed.desc.show();
 		} else {
@@ -320,13 +320,13 @@ var formdesigner = {
 		if (!el.data('prop').type.match('(break|info)')) {
 			this.ed.desc.show();
 			this.ed.req.show();
-			this.ed.hidenum.show();
 		}
 		// Load field properties
 		this.edits.id.val(el.data('prop').id);
 		this.edits.title.val(el.data('prop').title);
 		this.edits.defaultvalue.val(el.data('prop').defaultvalue);
 		this.edits.desc.val(el.data('prop').description);
+		this.edits.cssClass.val(el.data('prop').cssClass);
 
 		this.edits.req.get(0).checked = (el.data('prop').required == 1) ? true : false;
 		this.edits.display.find('option').each(function() {
@@ -421,6 +421,7 @@ var formdesigner = {
 		el.data('prop').title = this.edits.title.val();
 		el.data('prop').description = this.edits.desc.val();
 		el.data('prop').defaultvalue = this.edits.defaultvalue.val();
+		el.data('prop').cssClass = this.edits.cssClass.val();
 
 		el.data('prop').required = this.edits.req.get(0).checked ? 1 : 0;
 		el.data('prop').visibility = this.edits.display.val();
@@ -518,15 +519,9 @@ var formdesigner = {
 			
 			$(this).children(".grid").each(function() {
 
-
 				$(this).children(".gridcell").each( function() {
-
 					var control = $(this).children('.formfield').data('prop');
-					grid.rows[0].cols.push(control);
-
-					
-					//console.log($(this).children('.formfield').data('prop'));
-					//formdoc.push($(this).children('.formfield').data('prop'));					
+					grid.rows[0].cols.push(control);					
 				});				
 			});
 			
@@ -554,7 +549,6 @@ var formdesigner = {
 	deletecell: function(e) {
 		console.log(e);
 		if (e.keyCode == 46) {
-			console.log('del key pressed');
 			$(".selected-grid").remove();
 		}
 	}
