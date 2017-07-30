@@ -9,6 +9,7 @@ var formdesigner = {
 		
 		this.defaultTitles = {
 			'grid': 'Grid',
+			'lbl': 'Label field',
 			'text': 'Text field title',
 			'radio': 'Radio buttons title',
 			'droplist': 'Drop-down list title',
@@ -158,6 +159,8 @@ var formdesigner = {
 		var display = [];
 		if (field.type.match('text')) {
 			display.push.apply(display, ['<label class="well"><span class="title">',field.title,'</span><br /><input type="text" size="',field.fieldSize,'" value="',field.defaultvalue,'" /></label>']);
+		} else if (field.type.match('lbl')) {
+			display.push.apply(display, ['<label class="well"><span class="title">',field.title,'</span><br /></label>']);
 		} else if (field.type.match('date')) {
 			display.push.apply(display, ['<label class="well"><span class="title">',field.title,'</span><br /><input type="date" size="',field.fieldSize,'" value="',field.defaultvalue,'" /></label>']);
 		} else if (field.type.match('phone')) {
