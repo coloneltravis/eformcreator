@@ -8,11 +8,9 @@ block content
 	each obj in form
 		h1.pagetitle= obj.title
 		h3!= obj.desc
-		div.pagecontent
-			form(action='/saveform' id='sectionForm' method='post')
-				input#formJson(type='hidden' name='formJson')= fields
 
-			div.toolbox.col-md-3
+		div.pagecontent
+			div.toolbox
 				ul.toolscol
 					li
 						button.btn#addgrid(name="grid") Grid
@@ -73,21 +71,26 @@ block content
 							img(src='/img/break.png')
 				div.clearfix
 
-			div#formarea.col-md-9
+			div#formarea.col-md-10
 				div.grid-container
-					span.addgridleft.glyphicon.glyphicon-step-backward
-					span.addgridright.glyphicon.glyphicon-step-forward
+					div.addrows
+						span.addrowup.glyphicon.glyphicon-chevron-up
+						span.addrowdown.glyphicon.glyphicon-chevron-down
+					div.addcols
+						span.addcellleft.glyphicon.glyphicon-chevron-left
+						span.addcellright.glyphicon.glyphicon-chevron-right
 					div.grid
 						div.grid-4.gridcell
 						div.grid-4.gridcell
 						div.grid-4.gridcell
-						div.grid-4.gridcell					
+						div.grid-4.gridcell
 					div.clearfix
 
-				div.clearfix
-			div#formactions.clearfix
-				a.btn.btn-primary#save(href='#') Save
-				a.btn.btn-default(href='/cancel') Cancel
+			div#formactions.col-md-10
+				form(action='/formsave' id='sectionForm' method='post')
+					input#formJson(type='hidden' name='formJson')= fields
+					a.btn.btn-primary#save(href='#') Save
+					a.btn.btn-default(href='/cancel') Cancel
 				div.clearfix
 
 		div.pagefooter

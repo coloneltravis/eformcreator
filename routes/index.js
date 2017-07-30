@@ -58,9 +58,19 @@ router.get('/formedit/:id', function(req, res, next) {
 });
 
 
-router.post('/saveform', function(req, res, next) {
+router.post('/formsave', function(req, res, next) {
 
-	console.log(req.body);
+	console.log(req.body.formJson);
+	
+	
+	var db = new sqlite3.Database('formsdb.db');
+	db.serialize(function() {
+		var stmt = db.prepare('INSERT INTO forms (title, desc, orgname) VALUES (?,?,?)');
+		stmt.run(req.body.formtitle, req.body.formdesc, req.body.orgname);
+		stmt.finalize();
+	});
+	db.close();
+
 	res.send('Saving form');
 });
 
@@ -78,7 +88,7 @@ router.get('/admin', function(req, res, next) {
 
 
 
-router.post('/createform', function(req, res, next) {
+router.post('/formcreate', function(req, res, next) {
 
 	console.log(req.body);
 
