@@ -83,15 +83,17 @@ block content
 						span.addcellleft.glyphicon.glyphicon-chevron-left
 						span.addcellright.glyphicon.glyphicon-chevron-right
 					div.grid
-						div.grid-4.gridcell
-						div.grid-4.gridcell
-						div.grid-4.gridcell
-						div.grid-4.gridcell
-					div.clearfix
+						div.gridrow
+							div.grid-4.gridcell
+							div.grid-4.gridcell
+							div.grid-4.gridcell
+							div.grid-4.gridcell
+						div.clearfix
 
 			div#formactions.col-md-10
 				form(action='/formsave' id='sectionForm' method='post')
-					input#formJson(type='hidden' name='formJson')= fields
+					input#formJson(type='hidden' name='formJson')
+					input#formid(type='hidden' name='formid' value=obj.id)
 					a.btn.btn-primary#save(href='#') Save
 					a.btn.btn-default(href='/cancel') Cancel
 				div.clearfix

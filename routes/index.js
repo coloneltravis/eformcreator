@@ -40,9 +40,9 @@ router.get('/formedit/:id', function(req, res, next) {
 	var db = new sqlite3.Database('formsdb.db');
 
 	var fields = [];
-	var fld = {id: 1, type: 'text', description: 'text field', cats: null, perm: 0};
+	var fld = {id: req.params.id, type: 'text', description: 'text field', cats: null, perm: 0};
 	fields.push(fld);
-	console.log(fields);
+	//console.log(fields);
 
 	db.serialize(function() {
 		var stmt = db.prepare('SELECT id, title, desc FROM forms WHERE id=?');
@@ -62,12 +62,12 @@ router.post('/formsave', function(req, res, next) {
 
 	console.log(req.body.formJson);
 	
-	
 	var db = new sqlite3.Database('formsdb.db');
 	db.serialize(function() {
-		var stmt = db.prepare('INSERT INTO forms (title, desc, orgname) VALUES (?,?,?)');
-		stmt.run(req.body.formtitle, req.body.formdesc, req.body.orgname);
-		stmt.finalize();
+      db.run("UPDATE forms SET formJson = $json WHERE id = $id", {
+          $json: req.body.formJson,
+          $id: req.body.formid
+      });
 	});
 	db.close();
 
