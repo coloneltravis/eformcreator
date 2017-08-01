@@ -92,7 +92,7 @@ block content
 
 			div#formactions.col-md-10
 				form(action='/formsave' id='sectionForm' method='post')
-					input#formJson(type='hidden' name='formJson')
+					input#formJson(type='hidden' name='formJson' value=obj.formJson)
 					input#formid(type='hidden' name='formid' value=obj.id)
 					a.btn.btn-primary#save(href='#') Save
 					a.btn.btn-default(href='/cancel') Cancel

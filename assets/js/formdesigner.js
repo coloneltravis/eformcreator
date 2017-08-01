@@ -89,6 +89,11 @@ var formdesigner = {
 		$(".gridcell").on('click', this.bound.selectcell);
 		$("#save").on('click', this.bound.save);
 	
+		var json = JSON.parse($("#formJson").val());
+		if (json != '')
+			this.load(json);
+	
+		
 		this.autonumber = 1;
 
 		this.settingsdlg = $( "#settingsdlg" ).dialog({
@@ -495,6 +500,43 @@ var formdesigner = {
 	},
 
 	
+	load: function(json) {
+
+		//console.log(json);
+		
+		var formdoc = json;
+		var html = [];		
+		for (g=0; g<formdoc.length; g++) {
+			var grid = formdoc[g];
+
+			html.push('<div class="grid-container">');
+			html.push('<div class="addrows">', '<span class="addrowup glyphicon glyphicon-chevron-up"/>', '<span class="addrowdown glyphicon glyphicon-chevron-down"/>', '</div>');
+			html.push('<div class="addcols">', '<span class="addcellleft glyphicon glyphicon-chevron-left"/>', '<span class="addcellright glyphicon glyphicon-chevron-right"/>', '</div>');
+
+			html.push('<div class="grid">');			
+				
+			for (i=0; i<grid.rows.length; i++) {
+
+				html.push('<div class="gridrow">');
+
+				for (j=0; j<grid.rows[i].cols.length; j++) {
+
+					html.push('<div class="selected-grid gridcell grid-' + grid.rows[i].cols.length + '">');
+						console.log(grid.rows[i].cols[j]);
+						this.build(grid.rows[i].cols[j]);
+					html.push('</div>');
+				}
+				
+				html.push('</div>');
+			}
+			
+			html.push('</div></div>');
+		}
+		
+		this.formArea.append(html.join(''));
+	},
+
+	
 	save: function(e) {
 		if (e)
 			e.preventDefault();
@@ -515,8 +557,8 @@ var formdesigner = {
 
 
 	buildSave: function() {
-		var formdoc = [];
-
+		var formdoc = {};
+	
 		$('#formarea > .grid-container').each(function() {
 
 			var grid = { rows: [] };

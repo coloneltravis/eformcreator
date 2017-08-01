@@ -45,7 +45,7 @@ router.get('/formedit/:id', function(req, res, next) {
 	//console.log(fields);
 
 	db.serialize(function() {
-		var stmt = db.prepare('SELECT id, title, desc FROM forms WHERE id=?');
+		var stmt = db.prepare('SELECT id, title, desc, formJson FROM forms WHERE id=?');
 		stmt.all(req.params.id, function(err, row) {
 			//console.log(row);
 			//res.render('formedit', { title: 'Edit Form', formid: row.id, formtitle: row.title, formdesc: row.desc });
