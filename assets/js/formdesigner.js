@@ -557,27 +557,29 @@ var formdesigner = {
 
 
 	buildSave: function() {
-		var formdoc = {};
-	
+		var formdoc = [];
+
 		$('#formarea > .grid-container').each(function() {
-
-			var grid = { rows: [] };
 			
-			$(this).children(".grid").each(function() {
+			$(this).find(".grid").each(function() {
 
-				var gridrow = { cols: [] };
-			
+				var grid = { rows: [] };
+
 				$(this).children(".gridrow").each(function() {
+					
+					var gridrow = { cols: [] };					
+					
 					$(this).children(".gridcell").each( function() {
 						var control = $(this).children('.formfield').data('prop');
 						gridrow.cols.push(control);					
 					});
+					
+					grid.rows.push(gridrow);
 				});
-
-				grid.rows.push(gridrow);				
+				
+				formdoc.push(grid);
 			});
-			
-			formdoc.push(grid);
+
 		});
 		$('#formJson').val(JSON.stringify(formdoc));
 	},
