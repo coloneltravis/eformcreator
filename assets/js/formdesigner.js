@@ -89,11 +89,12 @@ var formdesigner = {
 		$(".gridcell").on('click', this.bound.selectcell);
 		$("#save").on('click', this.bound.save);
 	
-		var json = JSON.parse($("#formJson").val());
-		if (json != '')
-			this.load(json);
-	
-		
+		if ($("#formJson").val().length) {
+			var json = JSON.parse($("#formJson").val());
+			if (json != '')
+				this.load(json);
+		}
+
 		this.autonumber = 1;
 
 		this.settingsdlg = $( "#settingsdlg" ).dialog({
@@ -157,7 +158,7 @@ var formdesigner = {
 
 
 	// build the html for the selected control type
-	build: function(field) {
+	build: function(field, dest = null) {
 		var fieldTmp = jQuery.extend(true, {}, this.defaultField);
 		var fieldTmp2 = jQuery.extend(true, fieldTmp, field);
 		field = fieldTmp2;
@@ -240,18 +241,18 @@ var formdesigner = {
 			display.unshift('<div class="field">');
 			//display.push('<span class="typeLabel">'+field.type+'</span></div>');
 
-			var el = jQuery('<div class="formfield ' + field.type + '"></div>').html(display.join('')).appendTo(".selected-grid");
+			var dest_el = dest;
+			if (!dest) {
+				dest_el = $(".selected-grid");
+			}
+			
+			var el = jQuery('<div class="formfield ' + field.type + '"></div>').html(display.join('')).appendTo(dest_el);
 			//var el = $(".selected-grid").html(display.join(''));
 			
 			var fieldData = {}
 			$.extend(true, fieldData, field);
 
 			el.data('prop', fieldData).on('click', $.proxy(this.edit, this));
-
-			if (this.sort) {
-				this.sort.sortable('destroy');
-				this.sort = this.formArea.sortable(this.sortOptions);
-			}
 
 			if (field.type === 'droplist') {
 				el.find('select').change(this.fixOptions);
@@ -502,38 +503,38 @@ var formdesigner = {
 	
 	load: function(json) {
 
-		//console.log(json);
-		
-		var formdoc = json;
-		var html = [];		
+		//console.log(json);	
+		var formdoc = json;	
+
 		for (g=0; g<formdoc.length; g++) {
 			var grid = formdoc[g];
 
-			html.push('<div class="grid-container">');
-			html.push('<div class="addrows">', '<span class="addrowup glyphicon glyphicon-chevron-up"/>', '<span class="addrowdown glyphicon glyphicon-chevron-down"/>', '</div>');
-			html.push('<div class="addcols">', '<span class="addcellleft glyphicon glyphicon-chevron-left"/>', '<span class="addcellright glyphicon glyphicon-chevron-right"/>', '</div>');
+			var container = $("<div class='grid-container'/>").appendTo(this.formArea);
+			var addrows = $("<div class='addrows'/>").appendTo(container);
+			var addcols = $("<div class='addcols'/>").appendTo(container);
+			addrows.append("<span class='addrowup glyphicon glyphicon-chevron-up'/>");
+			addrows.append("<span class='addrowdown glyphicon glyphicon-chevron-down'/>");
+			addcols.append("<span class='addcellleft glyphicon glyphicon-chevron-left'/>");
+			addcols.append("<span class='addcellright glyphicon glyphicon-chevron-right'/>");
 
-			html.push('<div class="grid">');			
-				
+			var addgrid = $("<div class='grid'/>").appendTo(container);
+	
 			for (i=0; i<grid.rows.length; i++) {
 
-				html.push('<div class="gridrow">');
+				var addgridrow = $("<div class='gridrow'/>").appendTo(addgrid);
 
 				for (j=0; j<grid.rows[i].cols.length; j++) {
+					var fld = grid.rows[i].cols[j];
+					
+					var addgridcell = $('<div class="gridcell grid-' + grid.rows[i].cols.length + '"/>').appendTo(addgridrow);
 
-					html.push('<div class="selected-grid gridcell grid-' + grid.rows[i].cols.length + '">');
-						console.log(grid.rows[i].cols[j]);
-						this.build(grid.rows[i].cols[j]);
-					html.push('</div>');
+					if (fld != null) {
+						this.build(grid.rows[i].cols[j], addgridcell);
+					}
 				}
-				
-				html.push('</div>');
+
 			}
-			
-			html.push('</div></div>');
 		}
-		
-		this.formArea.append(html.join(''));
 	},
 
 	
