@@ -132,16 +132,16 @@ var formdesigner = {
 		this.autonumber++;
 	
 		if (type.match('grid')) {
-				var el = $("<div class='grid-container'/>").appendTo(this.formArea);
-				el.append("<div class='addrows'/>");
-				el.append("<div class='addcols'/>");
-				el.find(".addrows").append("<span class='addrowup glyphicon glyphicon-chevron-up'/>");
-				el.find(".addrows").append("<span class='addrowdown glyphicon glyphicon-chevron-down'/>");
-				el.append("<div class='grid'/>");
-				el.find(".addcols").append("<span class='addcellleft glyphicon glyphicon-chevron-left'/>");
-				el.find(".addcols").append("<span class='addcellright glyphicon glyphicon-chevron-right'/>");
-				el.find(".grid").append("<div class='gridrow'/>");
-				el.find(".gridrow").append("<div class='gridcell grid-2'/><div class='gridcell grid-2'/>");
+				var container = $("<div class='grid-container'/>").appendTo(this.formArea);
+				container.append("<div class='addrows'/>");
+				container.append("<div class='addcols'/>");
+				container.find(".addrows").append("<span class='addrowup glyphicon glyphicon-chevron-up'/>")
+					.append("<span class='addrowdown glyphicon glyphicon-chevron-down'/>");
+				container.find(".addcols").append("<span class='addcellleft glyphicon glyphicon-chevron-left'/>")
+					.append("<span class='addcellright glyphicon glyphicon-chevron-right'/>");
+				var addgrid = $("<div class='grid'/>").appendTo(container);
+				var addrow = $("<div class='gridrow'/>").appendTo(addgrid);
+				addrow.append("<div class='gridcell grid-2'/><div class='gridcell grid-2'/>");
 		}
 		else {
 			if (type.match('droplist|radio|check')) {
@@ -408,7 +408,7 @@ var formdesigner = {
 					el.find('.field div').each(function() {
 						$(this).remove();
 					});
-					var place = el.find('.typeLabel');
+					var place = el.find('.formfield');
 
 					$.each(opts, function(index, opt) {
 						newOpts = ['<label><input type="',optType,'" title="',opt.value,'" value="',opt.id,'" name="field_',that.radioSet,'"',(opt.selected) ? 'checked="checked"' : '','/> ',opt.value,'</label>'];
@@ -636,33 +636,45 @@ $(document).ready(function() {
 
 	
 	$(document).on('click', '.addcellleft', function(e) {
-		var cellcount = $(this).parent().parent().find(".gridrow .gridcell").length;
+		//console.log('addcellleft');
+
+		var cellcount = $(this).parent().parent().find(".grid:first .gridrow:first > .gridcell").length;
+		var container = $(this).parent().parent();
 		
 		if (cellcount < 4) {
-			$(this).parent().parent().find(".gridrow .gridcell").each(function() {
-				$(this).removeClass();
-				$(this).addClass("gridcell grid-" + parseInt(cellcount+1))
+			container.find(".gridrow").each(function() {
+				$(this).find(".gridcell").each(function() {
+					$(this).removeClass();
+					$(this).addClass("gridcell grid-" + parseInt(cellcount+1))
+				});
+				
+				$(this).prepend("<div class='gridcell grid-" + parseInt(cellcount+1) +"'/>");		
 			});
-			
-			$(this).parent().parent().find(".grid .gridrow:first").prepend("<div class='gridcell grid-" + parseInt(cellcount+1) +"'/>");
 		}
 	});
 
 	$(document).on('click', '.addcellright', function(e) {
-		var cellcount = $(this).parent().parent().find(".gridrow .gridcell").length;
-
+		//console.log('addcellright');
+		var cellcount = $(this).parent().parent().find(".grid:first .gridrow:first > .gridcell").length;
+		var container = $(this).parent().parent();
+		
 		if (cellcount < 4) {
-			$(this).parent().parent().find(".gridrow .gridcell").each(function() {
-				$(this).removeClass();
-				$(this).addClass("gridcell grid-" + parseInt(cellcount+1))
-			});
+			container.find(".gridrow").each(function() {
+				$(this).find(".gridcell").each(function() {
+					$(this).removeClass();
+					$(this).addClass("gridcell grid-" + parseInt(cellcount+1))
+				});
 
-			$(this).parent().parent().find(".grid .gridrow").append("<div class='gridcell grid-" + parseInt(cellcount+1) +"'/>");
+				$(this).append("<div class='gridcell grid-" + parseInt(cellcount+1) +"'/>");		
+			});
 		}
 	});
 
+	
 	$(document).on('click', '.addrowup', function(e) {
-		var cellcount = $(this).parent().parent().find(".gridrow .gridcell").length;
+		console.log('addrowup');
+
+		var cellcount = $(this).parent().parent().find(".gridcell").length;
 		if ($(this).parent().parent().find(".gridrow .gridcell").hasClass("grid-1")) cellcount = 1;
 		if ($(this).parent().parent().find(".gridrow .gridcell").hasClass("grid-2")) cellcount = 2;
 		if ($(this).parent().parent().find(".gridrow .gridcell").hasClass("grid-3")) cellcount = 3;
@@ -676,6 +688,8 @@ $(document).ready(function() {
 	});
 
 	$(document).on('click', '.addrowdown', function(e) {
+		console.log('addrowdown');
+		
 		var cellcount = $(this).parent().parent().find(".gridcell").length;
 		if ($(this).parent().parent().find(".gridcell").hasClass("grid-1")) cellcount = 1;
 		if ($(this).parent().parent().find(".gridcell").hasClass("grid-2")) cellcount = 2;
