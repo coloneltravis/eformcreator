@@ -280,7 +280,10 @@ var formdesigner = {
 
 		this.settingsdlg.dialog("option", "buttons", [ { text: "Delete",
 														  icon: "ui-icon-remove",
-														  click: function(e) {} },
+														  click: function(e) {that.deleteEdit(el);
+																			  $(this).dialog("close");
+																			}
+														},
 														{ text: "Apply",
 														  icon: "ui-icon-",
 														  click: function(e) {that.applyEdit(e);
@@ -353,6 +356,13 @@ var formdesigner = {
 		this.edits.fieldSize.find('option').each(function() {
 			this.selected = (this.value == el.data('prop').fieldSize);
 		});
+	},
+
+
+	deleteEdit: function(el) {
+		if (confirm('Are you sure you want to delete this control?')) {
+			el.remove();
+		}
 	},
 
 
