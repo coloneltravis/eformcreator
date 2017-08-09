@@ -12,10 +12,12 @@ a {
 #formarea {display:inline;}
 #formactions {margin-left:30px;}
 
-#formarea .grid-container { display:block; clear:both; padding:8px; }
+#formarea .grid-container { display:block; clear:both; height:120px;}
 
 #formarea .grid-container .addrows { display:table; min-height:90px; float:left;}
 #formarea .grid-container .addcols { display:block; width:98%; }
+#formarea .grid-container .delcol {position:absolute; z-index:100;}
+#formarea .grid-container .delrow {position:absolute; z-index:100;}
 
 #formarea  .grid-container .addcellleft {float:left;}
 #formarea  .grid-container .addcellright {float:right;}
@@ -40,7 +42,7 @@ a {
 	overflow:hidden;
 }
 
-
+.grid  .grid-1 { width:98%; }
 .grid  .grid-2 { width: 48%; }
 .grid  .grid-3 { width: 32%; }
 .grid  .grid-4 { width: 24%; }

@@ -278,12 +278,16 @@ var formdesigner = {
 
 		this.selected = el.get(0);
 
-		this.settingsdlg.dialog("option", "buttons", [ { text: "Apply",
-															icon: "ui-icon-",
-															click: function(e) {that.applyEdit(e);
+		this.settingsdlg.dialog("option", "buttons", [ { text: "Delete",
+														  icon: "ui-icon-remove",
+														  click: function(e) {} },
+														{ text: "Apply",
+														  icon: "ui-icon-",
+														  click: function(e) {that.applyEdit(e);
 																				$(this).dialog("close");
 																			}
-															} ] );
+														}
+													 ] );
 		this.settingsdlg.dialog("open");
 		this.settingsdlg.tabs();
 
@@ -627,20 +631,71 @@ $(document).ready(function() {
 	$(document).on('mouseover', '.grid-container', function(e) {
 		$(this).find(".addrows").show();
 		$(this).find(".addcols").show();
+			
+		if ($(e.target).hasClass("gridcell")) {
+			$(".delcol").remove();
+			$("<div class='delcol' id='" + "col" + $(e.target).index() + "'><span class='glyphicon glyphicon-trash'/></div>").prependTo(this);
+			$(".delcol").css("margin-left", $(e.target).position().left + ($(e.target).width()/3));
+			$(".delcol").css("margin-top", "10px");
+
+			$(".delrow").remove();
+			$("<div class='delrow' id='" + "row" + $(e.target).parent().index() + "'><span class='glyphicon glyphicon-trash'/></div>").prependTo(this);
+			$(".delrow").css("top", $(e.target).position().top + ($(e.target).height()/3));
+			$(".delrow").css("left", "10px");
+		}
 	});
+
 
 	$(document).on('mouseout', '.grid-container', function(e) {
 		$(".addrows").hide();
 		$(".addcols").hide();
+
+		if (!$(e.target).hasClass("gridcell")) {
+			$(".delcol").remove();
+		}
+	});
+
+
+	$(document).on('click', '.delcol', function(e) {
+		var col = parseInt($(this).attr("id").slice(3));
+		var container = $(this).parent();
+		var cellcount = container.find(".gridrow:first > .gridcell").length;
+
+		if (cellcount > 0) {
+			container.find(".gridrow").each(function() {
+				$(this).find(".gridcell").eq(col).remove();
+
+				$(this).find(".gridcell").each(function() {
+					$(this).removeClass("grid-" + cellcount);
+					$(this).addClass("grid-" + parseInt(cellcount-1));
+				});
+
+			});
+		}
+		else container.remove();
+	});
+
+
+	$(document).on('click', '.delrow', function(e) {
+		var row = parseInt($(this).attr("id").slice(3));
+		var container = $(this).parent();
+		var rowcount = container.find(".gridrow").length;
+
+		console.log(rowcount);
+
+		if (rowcount > 0) {
+			container.find(".gridrow").eq(row).remove();
+		}
+		else container.remove();
 	});
 
 	
 	$(document).on('click', '.addcellleft', function(e) {
 		//console.log('addcellleft');
 
-		var cellcount = $(this).parent().parent().find(".grid:first .gridrow:first > .gridcell").length;
 		var container = $(this).parent().parent();
-		
+		var cellcount = container.find(".grid:first .gridrow:first > .gridcell").length;
+3
 		if (cellcount < 4) {
 			container.find(".gridrow").each(function() {
 				$(this).find(".gridcell").each(function() {
