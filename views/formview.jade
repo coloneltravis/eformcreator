@@ -1,0 +1,35 @@
+extends layout
+
+block scripts
+	link(rel='stylesheet', href='/css/formview.css')
+	
+block content
+
+	h1.pagetitle= title
+	h3!= desc
+
+	div.pagecontent
+		div#formarea
+			each f, i in form
+				each grid in form[i]
+					div.grid
+
+						each r, i in grid.rows
+							div.gridrow
+
+								each c, j in r.cols
+									div.gridcell(class="grid-" + r.cols.length)
+										if (c != null)
+											label= c.title
+											case c.type
+												when "text"
+													input(class="text" type="text" name=c.control_id id=c.control_id)
+												when "number"
+													input(class="number" type="text" name=c.control_id id=c.control_id)
+												when "area"
+													textarea(class="area" rows="2" cols="20" name=c.control_id id=c.control_id)
+												when "date"
+													input(class="datepicker" type="text" name=c.control_id id=c.control_id)
+												when "time"
+													input(class="timepicker" type="text" name=c.control_id id=c.control_id)
+	div.pagefooter

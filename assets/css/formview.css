@@ -1,0 +1,49 @@
+body {
+  padding:30px;
+}
+
+
+nav.navbar {z-index:1000;background-color:#fff;border-bottom:1px dotted #000;}
+
+a {
+  color: #00B7FF;
+}
+
+#formarea {display:inline;}
+#formactions {margin-left:30px;}
+
+#formarea  { display:block; clear:both; height:120px;}
+
+
+
+#formarea .grid  {
+	float:left;
+	min-height:90px;
+	width:96%;
+	margin:4px; padding:8px;
+	margin-bottom:20px;
+}
+
+#formarea .grid .gridcell {
+	float:left;
+	border: 1px dotted #eee;
+	margin:1px;
+	min-height:90px; height:90px;
+	overflow:hidden;
+}
+
+.gridcell label {display:block;}
+
+
+.grid  .grid-1 { width:98%; }
+.grid  .grid-2 { width: 48%; }
+.grid  .grid-3 { width: 32%; }
+.grid  .grid-4 { width: 24%; }
+.grid  .grid-5 { width: 19%; }
+.grid  .grid-6 { width: 15%; }
+
+label.well {margin-bottom:0px !important;}
+
+
+ul {list-style-type: none;}
+

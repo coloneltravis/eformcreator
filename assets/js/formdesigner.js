@@ -90,6 +90,7 @@ var formdesigner = {
 		$("#save").on('click', this.bound.save);
 	
 		if ($("#formJson").val().length) {
+			//console.log($("#formJson").val());
 			var json = JSON.parse($("#formJson").val());
 			if (json != '')
 				this.load(json);
@@ -517,11 +518,13 @@ var formdesigner = {
 	
 	load: function(json) {
 
-		//console.log(json);	
+			
 		var formdoc = json;	
+		//console.log(formdoc);
 
-		for (g=0; g<formdoc.length; g++) {
-			var grid = formdoc[g];
+		for (f in formdoc) {
+			var grid = formdoc[f].grid;
+			//console.log(grid);
 
 			var container = $("<div class='grid-container'/>").appendTo(this.formArea);
 			var addrows = $("<div class='addrows'/>").appendTo(container);
@@ -533,20 +536,24 @@ var formdesigner = {
 
 			var addgrid = $("<div class='grid'/>").appendTo(container);
 	
-			for (i=0; i<grid.rows.length; i++) {
 
-				var addgridrow = $("<div class='gridrow'/>").appendTo(addgrid);
+			var addgridrow = $("<div class='gridrow'/>").appendTo(addgrid);
+			
+			for (r in grid.rows) {
+				var gridrow = grid.rows[r];
+				//console.log(gridrow);
 
-				for (j=0; j<grid.rows[i].cols.length; j++) {
-					var fld = grid.rows[i].cols[j];
+				for (c in gridrow.cols) {
 					
-					var addgridcell = $('<div class="gridcell grid-' + grid.rows[i].cols.length + '"/>').appendTo(addgridrow);
+					var fld = gridrow.cols[c];
+					//console.log(fld);
+
+					var addgridcell = $('<div class="gridcell grid-' + gridrow.cols.length + '"/>').appendTo(addgridrow);
 
 					if (fld != null) {
-						this.build(grid.rows[i].cols[j], addgridcell);
+						this.build(fld, addgridcell);
 					}
 				}
-
 			}
 		}
 	},
@@ -592,7 +599,7 @@ var formdesigner = {
 					grid.rows.push(gridrow);
 				});
 				
-				formdoc.push(grid);
+				formdoc.push({"grid": grid});
 			});
 
 		});

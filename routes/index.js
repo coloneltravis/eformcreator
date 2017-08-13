@@ -60,8 +60,8 @@ router.get('/formedit/:id', function(req, res, next) {
 
 router.post('/formsave', function(req, res, next) {
 
-	console.log(req.body.formJson);
-	
+	//console.log(req.body.formJson);
+
 	var db = new sqlite3.Database('formsdb.db');
 	db.serialize(function() {
       db.run("UPDATE forms SET formJson = $json WHERE id = $id", {
@@ -71,15 +71,33 @@ router.post('/formsave', function(req, res, next) {
 	});
 	db.close();
 
-	res.send('Saving form');
+	res.send('Form saved');
 });
 
 
 
+router.get('/formview/:id', function(req, res, next) {
 
-router.get('/reports', function(req, res, next) {
-	  res.render('index', { title: 'Reports' });
+	var db = new sqlite3.Database('formsdb.db');
+
+	db.serialize(function() {
+		var stmt = db.prepare('SELECT id, title, desc, formJson FROM forms WHERE id=?');
+		stmt.all(req.params.id, function(err, row) {
+
+			console.log(row[0].formJson);
+			var form = JSON.parse(row[0].formJson);
+			console.dir(form[0].grid);
+			console.dir(form[0].grid.rows);
+
+			res.render('formview', { form: form, title: row[0].title, desc: row[0].desc });
+		});
+		stmt.finalize();
+	});
+
+	db.close();
 });
+
+
 
 
 router.get('/admin', function(req, res, next) {
