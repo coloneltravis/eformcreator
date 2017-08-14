@@ -10,26 +10,47 @@ block content
 
 	div.pagecontent
 		div#formarea
-			each f, i in form
-				each grid in form[i]
-					div.grid
+			form(method=post action="/formview/send")
+				each f, i in form
+					each grid in form[i]
+						div.grid
+							each r, i in grid.rows
+								div.gridrow
+									each c, j in r.cols
+										div.gridcell(class="grid-" + r.cols.length)
+											if (c != null)
+												div.formfield
+													if (c.type != 'pushbutton')
+														label= c.title													
+													case c.type
+														when "text"
+															input(class="text" type="text" name=c.id id=c.id)
+														when "number"
+															input(class="number" type="text" name=c.id id=c.id)
+														when "area"
+															textarea(class="area" rows="2" cols="20" name=c.id id=c.id)
+														when "date"
+															input(class="datepicker" type="text" name=c.id id=c.id)
+														when "time"
+															input(class="timepicker" type="text" name=c.id id=c.id)
+														when "droplist"
+															select(name=c.control_id id=c.id)
+																each o in c.options
+																	option(value=o.id)= o.value
+														when "radio"
+															ul.radio
+																each o in c.options
+																	li
+																		#[input(type="radio" name=c.id value=o.id)] #{o.value}
+														when "check"
+															ul.check
+																each o in c.options
+																	li
+																		#[input(type="checkbox" name=c.id value=o.id)] #{o.value}
+														when "pushbutton"
+															button(type="button" id=c.id value=c.title)= c.title
+				input(type="reset" name="cancel" value="Cancel").btn
+				input(type="submit" name="send" value="Send").btn.btn-primary
 
-						each r, i in grid.rows
-							div.gridrow
-
-								each c, j in r.cols
-									div.gridcell(class="grid-" + r.cols.length)
-										if (c != null)
-											label= c.title
-											case c.type
-												when "text"
-													input(class="text" type="text" name=c.control_id id=c.control_id)
-												when "number"
-													input(class="number" type="text" name=c.control_id id=c.control_id)
-												when "area"
-													textarea(class="area" rows="2" cols="20" name=c.control_id id=c.control_id)
-												when "date"
-													input(class="datepicker" type="text" name=c.control_id id=c.control_id)
-												when "time"
-													input(class="timepicker" type="text" name=c.control_id id=c.control_id)
 	div.pagefooter
+		
