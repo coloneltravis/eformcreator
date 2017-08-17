@@ -71,7 +71,7 @@ router.post('/formsave', function(req, res, next) {
 	});
 	db.close();
 
-	res.send('Form saved');
+	res.redirect('/forms');
 });
 
 
@@ -118,7 +118,7 @@ router.post('/formcreate', function(req, res, next) {
 	});
 	db.close();
 
-	res.send('Creating form');
+	res.redirect('/forms');
 });
 
 

@@ -39,7 +39,10 @@ div#settingsdlg.dialog
 						option(value='B') Boolean
 				label#size_label
 					div.heading Field size (px):
-					input(type='text' id='field_size' value='' size="5")
+						select(id="field_size" name="field_size")
+							option(value="8") small
+							option(value="12") medium
+							option(value="20") large
 			div.tabcol2
 				label#minmax_label
 					div.heading Minimum value:

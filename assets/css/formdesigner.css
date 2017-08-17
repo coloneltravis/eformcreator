@@ -62,7 +62,7 @@ a {
 }
 
 
-label.well {margin-bottom:0px !important;}
+label.well {margin-bottom:0px !important; width:100%;}
 
 
 div.toolbox {

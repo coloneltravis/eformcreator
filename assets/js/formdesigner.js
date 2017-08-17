@@ -1,5 +1,6 @@
 
 
+
 var formdesigner = {
 	
 	initialise: function() {
@@ -46,7 +47,7 @@ var formdesigner = {
 		// 1 - value, 3 - id, 5 - type, 7 - checked
 		this.newOption = ['<input type="text" name="option" size="25" value="','','" id="opt_','0','" /><input type="','','" name="optSelect" title="Default this option" ','',' /> <img src="/img/add.png" height="16" width="16" alt="Create a new entry" /> <img src="/img/delete.png" height="16" width="16" alt="Delete this entry" />'];
 
-		
+		// control groups on settings dialog
 		this.ed = {
 			'opt': $('#options_label'),
 			'fieldSize': $('#size_label'),
@@ -57,6 +58,7 @@ var formdesigner = {
 			'datatype': $('datatype_label')
 		};
 
+		// control edit ids on settings dialog
 		this.edits = {
 			'id': $('#control_id'),
 			'title': $('#title'),
@@ -95,6 +97,7 @@ var formdesigner = {
 			if (json != '')
 				this.load(json);
 		}
+		else this.addGrid();
 
 		this.autonumber = 1;
 
@@ -133,16 +136,7 @@ var formdesigner = {
 		this.autonumber++;
 	
 		if (type.match('grid')) {
-				var container = $("<div class='grid-container'/>").appendTo(this.formArea);
-				container.append("<div class='addrows'/>");
-				container.append("<div class='addcols'/>");
-				container.find(".addrows").append("<span class='addrowup glyphicon glyphicon-chevron-up'/>")
-					.append("<span class='addrowdown glyphicon glyphicon-chevron-down'/>");
-				container.find(".addcols").append("<span class='addcellleft glyphicon glyphicon-chevron-left'/>")
-					.append("<span class='addcellright glyphicon glyphicon-chevron-right'/>");
-				var addgrid = $("<div class='grid'/>").appendTo(container);
-				var addrow = $("<div class='gridrow'/>").appendTo(addgrid);
-				addrow.append("<div class='gridcell grid-2'/><div class='gridcell grid-2'/>");
+			this.addGrid();
 		}
 		else {
 			if (type.match('droplist|radio|check')) {
@@ -155,6 +149,21 @@ var formdesigner = {
 
 			this.build(field);
 		}
+	},
+
+
+	// add a 1-row 2-column grid to the form area
+	addGrid: function() {
+		var container = $("<div class='grid-container'/>").appendTo(this.formArea);
+		container.append("<div class='addrows'/>");
+		container.append("<div class='addcols'/>");
+		container.find(".addrows").append("<span class='addrowup glyphicon glyphicon-chevron-up'/>")
+			.append("<span class='addrowdown glyphicon glyphicon-chevron-down'/>");
+		container.find(".addcols").append("<span class='addcellleft glyphicon glyphicon-chevron-left'/>")
+			.append("<span class='addcellright glyphicon glyphicon-chevron-right'/>");
+		var addgrid = $("<div class='grid'/>").appendTo(container);
+		var addrow = $("<div class='gridrow'/>").appendTo(addgrid);
+		addrow.append("<div class='gridcell grid-2'/><div class='gridcell grid-2'/>");
 	},
 
 
@@ -552,6 +561,7 @@ var formdesigner = {
 
 					if (fld != null) {
 						this.build(fld, addgridcell);
+						this.autonumber++;
 					}
 				}
 			}
