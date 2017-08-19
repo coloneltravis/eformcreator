@@ -249,7 +249,7 @@ var formdesigner = {
 
 		if (display.length > 0) {
 			display.unshift('<div class="field">');
-			//display.push('<span class="typeLabel">'+field.type+'</span></div>');
+			display.push('<span class="typeLabel">'+field.type+'</span></div>');
 
 			var dest_el = dest;
 			if (!dest) {
@@ -257,7 +257,8 @@ var formdesigner = {
 			}
 			
 			var el = jQuery('<div class="formfield ' + field.type + '"></div>').html(display.join('')).appendTo(dest_el);
-			//var el = $(".selected-grid").html(display.join(''));
+			//var el = jQuery(display.join('')).appendTo(dest_el);
+			
 			
 			var fieldData = {}
 			$.extend(true, fieldData, field);
@@ -432,8 +433,8 @@ var formdesigner = {
 					el.find('.field div').each(function() {
 						$(this).remove();
 					});
-					var place = el.find('.formfield');
-
+					var place = el.find('.typeLabel')
+	
 					$.each(opts, function(index, opt) {
 						newOpts = ['<label><input type="',optType,'" title="',opt.value,'" value="',opt.id,'" name="field_',that.radioSet,'"',(opt.selected) ? 'checked="checked"' : '','/> ',opt.value,'</label>'];
 
