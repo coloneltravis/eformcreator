@@ -5,12 +5,12 @@ block scripts
 	
 block content
 
-	h1.pagetitle= title
+	h2.pagetitle= title
 	h3!= desc
 
 	div.pagecontent
 		div#formarea
-			form(method=post action="/formview/send")
+			form(method="post" action="/formview/send")
 				each f, i in form
 					each grid in form[i]
 						div.grid

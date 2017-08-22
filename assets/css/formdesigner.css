@@ -91,8 +91,12 @@ ul.toolscol li button.btn img {float:left;margin:2px;}
 #settingsdlg {display:none;}
 
 .tab {}
-.tab .tabcol1 {float:left; width:49%; margin-right:5px;}
-.tab .tabcol2 {}
+.tab .tabcol {float:left; margin-right:3px;}
+.tabcol.cols-2 {width:48%;}
 
-.tab  label {margin-botton: 5px; padding:6px; display:block;}
-.tab label .heading {width:50em; padding-right:3px; font-weight:bold;}
+.tab label {margin-bottom:4px; padding:4px; display:block;}
+.tab label .heading {width:30em; padding-right:6px; font-weight:bold;}
+
+.tabcol label {margin-bottom:4px; padding:4px; display:block;}
+.tabcol label {margin-bottom:4px; padding:4px; display:block;}
+

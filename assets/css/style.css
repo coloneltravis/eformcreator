@@ -5,11 +5,16 @@ body {
 
 nav.navbar {z-index:1000;background-color:#fff;border-bottom:1px dotted #000;}
 
-a {
-  color: #00B7FF;
-}
+ul.nav.navbar-nav li {margin:1px; border-radius:10px 10px 0 0; background-color:#eef;}
+
+a { color: #00B7FF; }
+
+ul {list-style-type: none;}
 
 
+
+
+ul#forms-list > li > a {margin: 4px; padding:4px;}
 
 label.well {margin-bottom:0px !important;}
 

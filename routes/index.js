@@ -98,10 +98,17 @@ router.get('/formview/:id', function(req, res, next) {
 });
 
 
+router.post('/formview/send', function(req, res, next) {
+
+	console.log(req.body);
+	res.send("Thank you for submitting the form.");
+});
 
 
-router.get('/admin', function(req, res, next) {
-	  res.render('index', { title: 'Admin' });
+
+
+router.get('/data', function(req, res, next) {
+	  res.send('Data for submitted forms...');
 });
 
 

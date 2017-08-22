@@ -54,8 +54,9 @@ var formdesigner = {
 			'req': $('#required_label'),
 			'desc': $('#description_label'),
 			'def': $('#default_label'),
-			'minmax': $('minmax_label'),
-			'datatype': $('datatype_label')
+			'minmax': $('#minmax_label'),
+			'datatype': $('#datatype_label'),
+			'mask': $('#mask_label')
 		};
 
 		// control edit ids on settings dialog
@@ -105,8 +106,8 @@ var formdesigner = {
 		  autoOpen: false,
 		  title: "Control Settings",
 		  classes: { "ui-dialog-titlebar-close": "ui-icon ui-icon-close" },
-		  height: 350,
-		  width: 500,
+		  height: 480,
+		  width: 550,
 		  modal: true,
 		  resizable: false
 		});	
@@ -257,8 +258,6 @@ var formdesigner = {
 			}
 			
 			var el = jQuery('<div class="formfield ' + field.type + '"></div>').html(display.join('')).appendTo(dest_el);
-			//var el = jQuery(display.join('')).appendTo(dest_el);
-			
 			
 			var fieldData = {}
 			$.extend(true, fieldData, field);
@@ -319,34 +318,63 @@ var formdesigner = {
 		});
 
 
-		if (el.data('prop').type.match('(text|url|phone|number|email)')) {
+		if (el.data('prop').type.match('(text|number|url|phone|email)')) {
 			this.ed.opt.hide();
 			this.ed.fieldSize.show();
 			this.ed.def.show();
+			this.ed.datatype.show();
+			this.ed.mask.hide();		
+			this.ed.minmax.hide();
+
+			if (el.data('prop').type == 'number') {
+				this.ed.minmax.show()
+				this.ed.mask.hide();
+				this.edits.dataType.val('NI');
+			}
+			else if (el.data('prop').type == 'text') {
+				this.ed.mask.show();
+				this.ed.minmax.hide();
+				this.edits.dataType.val('AN');
+			}
 		} else if (el.data('prop').type == 'area') {
 			this.ed.opt.hide();
 			this.ed.fieldSize.show();
 			this.ed.def.hide();
+			this.ed.datatype.hide();
+			this.ed.minmax.hide();
+			this.ed.mask.hide();
+
 		} else if (el.data('prop').type.match('(radio|check|droplist)')) {
 			this.ed.def.hide();
+			this.ed.datatype.hide();
+			this.ed.minmax.hide();
+			this.ed.mask.hide();
+
 			if (el.data('prop').type == 'droplist') this.ed.fieldSize.show();
 			else this.ed.fieldSize.hide();
 
 			this.ed.opt.show();
 			this.ed.opt.find('a#options_add').show();
 
-
 		} else if (el.data('prop').type.match('(break|info)')) {
 			this.ed.def.hide();
 			this.ed.opt.hide();
 			this.ed.fieldSize.hide();
 			this.ed.req.hide();
+			this.ed.datatype.hide();
+			this.ed.minmax.hide();
+			this.ed.mask.hide();
 			if (el.data('prop').type == 'break') this.ed.desc.hide();
 			else this.ed.desc.show();
+
 		} else {
 			this.ed.opt.hide();
 			this.ed.fieldSize.hide();
 			this.ed.def.hide();
+			this.ed.datatype.hide();
+			this.ed.minmax.hide();
+			this.ed.mask.hide();
+			this.ed.req.hide();
 		}
 
 		if (!el.data('prop').type.match('(break|info)')) {

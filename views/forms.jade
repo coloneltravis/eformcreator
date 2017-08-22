@@ -1,14 +1,16 @@
 extends layout
 
 block content
-	h1.pagetitle= title
+	h2.pagetitle= title
 	div.pagecontent
-		a.btn.btn-primary(href='/formadd') Create a Form
-		ul
+		ul#forms-list
 			for form in formslist
 				li
-					a.btn(href='/formedit/#{form.id}') Edit
+					a.btn.btn-default(href='/formedit/#{form.id}' title='Edit')
+						i.glyphicon.glyphicon-pencil= Edit
+					a.btn.btn-default(href='/formview/#{form.id}' title='View')
+						i.glyphicon.glyphicon-search= View
 					span= form.title
-				li
-					a.btn(href='/formview/#{form.id}') View
+
 	div.pagefooter
+		a.btn.btn-primary(href='/formadd') Create a Form

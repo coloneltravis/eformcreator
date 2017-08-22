@@ -12,23 +12,25 @@ div#settingsdlg.dialog
 			li
 				a(href='#tab5') Events
 		#tab1.tab
-			label
-				div.heading Control ID:
-				input(type='text' id="control_id" name='control_id' value='' size="10")
-			label
-				div.heading Title:
-				input(type='text' id='title' name='title' value='' size="20")
-			label
-				div.heading Description:
-				textarea(rows='2' cols='50' id='desc' name='desc')
-			label
-				span.heading Use as tooltip:
-				input(type="checkbox" id='tooltip' name='tooltip')
-			label
-				span.heading CSS class:
-				input(type="text" id='css_class' name='css_class' size="12")
+			div.tabcol
+				label
+					div.heading Control ID:
+					input(type='text' id="control_id" name='control_id' value='' size="30")
+				label
+					div.heading Title:
+					textarea(type='text' id='title' name='title' rows="2" cols="40")
+				label(style='float:right;')
+					span.heading Use as tooltip:
+					input(type="checkbox" id='tooltip' name='tooltip')
+				label
+					div.heading Description:
+					textarea(rows='2' cols='40' id='desc' name='desc')
+				label
+					div.heading Container CSS class:
+					input(type="text" id='css_class' name='css_class' size="30")
+					
 		#tab2.tab
-			div.tabcol1
+			div.tabcol.cols-2
 				label#datatype_label
 					div.heading Data type:
 					select(name='data_type' id='data_type')
@@ -43,45 +45,58 @@ div#settingsdlg.dialog
 							option(value="8") small
 							option(value="12") medium
 							option(value="20") large
-			div.tabcol2
+				label#required_label
+					span.heading Required?
+					input(type='checkbox' id='required' name='required' value='')
+			div.tabcol.cols-2
 				label#minmax_label
 					div.heading Minimum value:
 					input(type='text' id='min_value' value='' size="5")
-					br
 					div.heading Maximum value:
 					input(type='text' id='max_value' value='' size="5")
 				label#mask_label
 					div.heading Input mask:
-					input(type='text' id='input_mask' value='' size="10")
-				label#required_label
-					span.heading Required?
-					input(type='checkbox' id='required' name='required' value='')
+					input(type='text' id='input_mask' value='' size="20")
+
 		#tab3.tab
-			div.tabcol1
+			div.tabcol.cols-2
 				label#default_label
 					div.heading Default Value:
-					textarea(rows='2' cols='20' id='defaultvalue' name='defaultvalue')
+					textarea(rows='3' cols='20' id='defaultvalue' name='defaultvalue')
 				label#visibility
 					div.heading Visibility:
-					textarea(rows='2' cols='20' id='visibility' name='visibility')
-			div.tabcol2
+					textarea(rows='3' cols='20' id='visibility' name='visibility')
+			div.tabcol.cols-2
 				label#readonly_label
 					div.heading Readonly:
-					textarea(rows='2' cols='20' id='readonly' name='readonly')
+					textarea(rows='3' cols='20' id='readonly' name='readonly')
+				label#calculate_label
+					div.heading Calculate:
+					textarea(rows='3' cols='20' id='calculate' name='calculate')
+
 		#tab4.tab
-			label#options_label
-				ol
-					li
-					li
-					li
-				p
-					a.btn.btn-default#option_add(href='#' role="button") Add
-					a.btn.btn-default#option_clear(href='#' role="button") Clear
+			div.tabcol
+				label#options_label
+					ol
+						li
+						li
+						li
+					label
+						a.btn.btn-default#option_add(href='#' role="button") Add
+						a.btn.btn-default#option_clear(href='#' role="button") Clear
 		#tab5.tab
 			label#events_label
-				p
-					div.heading onClick:
-					textarea(rows='2' cols='20' id='onclick' name='onclick')
-				p
-					div.heading onChange:
-					textarea(rows='2' cols='20' id='onchange' name='onchange')
+				div.tabcol.cols-2
+					label
+						div.heading Activated:
+						textarea(rows='3' cols='20' id='onclick' name='onclick')
+					label
+						div.heading Value Changed:
+						textarea(rows='3' cols='20' id='onchange' name='onchange')
+				div.tabcol.cols-2
+					label
+						div.heading Enabled:
+						textarea(rows='3' cols='20' id='onshow' name='onshow')
+					label
+						div.heading Disabled:
+						textarea(rows='3' cols='20' id='onhide' name='onhide')
